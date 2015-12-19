@@ -174,7 +174,7 @@ end
 function mod:PopulateProfession(profession)
 
   if profession == nil then
-    return
+    return;
   end
 
   --local vars
