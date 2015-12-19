@@ -72,7 +72,7 @@ def GetGit(url,folder):
 
 def copy_and_overwrite(from_path, to_path):
     if os.path.exists(to_path):
-      shutil.rmtree(to_path)
+      del_tree(to_path)
       log.warning("Overwriting path : "+to_path)
     else:
       log.info("Copying : "+to_path)
@@ -113,6 +113,7 @@ def ProcessDeps(deps,libs_folder,install_folder):
       else:
         to_folder = install_folder + os.sep + this_dep["destination"]+os.sep+dep
         copy_and_overwrite(destination_folder, to_folder)
+      del_tree(destination_folder)
 
 if __name__ == '__main__':
 
