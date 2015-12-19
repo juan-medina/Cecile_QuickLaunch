@@ -173,6 +173,10 @@ end
 --populate
 function mod:PopulateProfession(profession)
 
+  if profession == nil then
+    return
+  end
+
   --local vars
   local item , searchableText, start, duration, enable;
 
