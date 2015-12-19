@@ -1,2 +1,6 @@
 #python compiled files
 *.pyc
+
+#libraries
+libs
+-libs\deps.json

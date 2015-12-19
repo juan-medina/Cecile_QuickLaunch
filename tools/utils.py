@@ -14,7 +14,9 @@ class AddonInfo:
 
     self.src_folder = os.path.abspath(os.path.join(os.pardir, "src"))
 
-    self.toc = self.src_folder + os.sep + self.name + os.sep + self.name + ".toc"
+    self.main_addon = self.src_folder + os.sep + self.name
+
+    self.toc = self.main_addon + os.sep + self.name + ".toc"
 
     self.version = self.GetAddonVersion()
 
