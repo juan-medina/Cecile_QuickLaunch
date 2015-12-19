@@ -1,0 +1,11 @@
+## Interface: 60200
+## Title: |cffffffffCecile|r_|cfffff569QuickLaunch|rSocial
+## Notes: Spec & Gear module for |cffffffffCecile|r_|cfffff569QuickLaunch|r
+## Author: Cecile
+## Version: 1.0.0.release
+## OptionalDeps:
+## Dependencies: Cecile_QuickLaunch
+
+locales\load_locales.xml
+
+social.lua

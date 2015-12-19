@@ -1,0 +1,1 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">	<Script file="main_enUS.lua"/>	<Script file="main_esES.lua"/>	<Include file="modules\modules_locales.xml"/></Ui>

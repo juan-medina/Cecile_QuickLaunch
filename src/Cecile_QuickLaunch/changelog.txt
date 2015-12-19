@@ -1,0 +1,38 @@
+v1.1.2
+- Module Items : Fix issue with items with no name (issue)
+- Spell Items : Adding Basic profession spells (Enchanting, Cooking Fire, etc)
+v1.1.1
+- Module Items : Scanning bagpack (issue)
+v1.1.0
+- Added 'two steps' search option
+- Added Toys module
+- Added Spells (abilities, teleports & portals, summons, buffs,etc.) module
+- Added Items (bags & equipped) module
+- Added a Minimap icon (sorry for the artwork, no my thing)
+v1.0.1
+- Fix issue: after pressing the keybinding the actual key its output in the editbox
+- Added scrolling the items using arrow keys
+v1.0.0
+- First release
+- Added options to change window appearance
+- Added social module
+v0.5.0
+- Splitting the different modules in separate AddOns
+- Added a Keybinding to repeat last command
+- Added Specializations and gear sets module
+v0.0.3
+- Adding Achievements search module
+- Adding Search Blacklist
+- Code cleanup
+v0.0.2
+- Initial beta
+- Added AddOns configurations search module.
+- Now pets with custom name display both, specie and custom name.
+- Merging words, for example searching 'mount mo' is like searching 'mo'.
+- Added the ability to add aliases in the search options.
+- Added two aliases : cfg for Addon Config and cql for Cecile_QuickLaunch.
+- Added Options to enable / disable modules.
+- Mounts Module now could be customize.
+- Pets Module now could be customize.
+v0.0.1
+- Initial alpha

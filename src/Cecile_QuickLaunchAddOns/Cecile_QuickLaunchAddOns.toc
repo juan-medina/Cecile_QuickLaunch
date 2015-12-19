@@ -1,0 +1,11 @@
+## Interface: 60200
+## Title: |cffffffffCecile|r_|cfffff569QuickLaunch|rAddons
+## Notes: Addons module for |cffffffffCecile|r_|cfffff569QuickLaunch|r
+## Author: Cecile
+## Version: 1.0.0.release
+## OptionalDeps:
+## Dependencies: Cecile_QuickLaunch
+
+locales\load_locales.xml
+
+addons.lua
