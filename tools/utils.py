@@ -61,7 +61,8 @@ class AddonInfo:
     for (dirpath, dirnames, filenames) in walk(self.src_folder):
         folders.append(dirpath)
         for filename in filenames:
-          files.append(dirpath + os.sep + filename)
+          if not (dirpath == self.src_folder):
+            files.append(dirpath + os.sep + filename)
 
     for folder in folders:
       folder_partial = folder.replace(self.src_folder+os.sep,"")
