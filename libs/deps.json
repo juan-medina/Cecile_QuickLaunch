@@ -1,0 +1,58 @@
+{
+  "Ace3" : {
+    "type" : "svn",
+    "url" : "svn://svn.wowace.com/wow/ace3/mainline/trunk",
+    "folders" : [
+      "AceAddon-3.0",
+      "AceComm-3.0",
+      "AceConfig-3.0",
+      "AceDB-3.0",
+      "AceDBOptions-3.0",
+      "AceEvent-3.0",
+      "AceGUI-3.0",
+      "AceHook-3.0",
+      "AceLocale-3.0",
+      "AceTimer-3.0",
+      "CallbackHandler-1.0",
+      "LibStub" ],
+    "destination" : "Libs",
+    "disabled" : false
+  },
+  "AceGUI-3.0-SharedMediaWidgets" : {
+    "type" : "svn",
+    "url" : "svn://svn.wowace.com/wow/ace-gui-3-0-shared-media-widgets/mainline/trunk",
+    "folders" : [
+      "AceGUI-3.0-SharedMediaWidgets" ],
+    "destination" : "Libs",
+    "disabled" : false
+  },
+  "LibDataBroker-1.1" : {
+    "type" : "git",
+    "url" : "git://git.wowace.com/wow/libdatabroker-1-1/mainline.git",
+    "folders" : [],
+    "destination" : "Libs",
+    "disabled" : false
+  },
+  "LibDBIcon-1.0" : {
+    "type" : "svn",
+    "url" : "svn://svn.wowace.com/wow/libdbicon-1-0/mainline/trunk",
+    "folders" : ["LibDBIcon-1.0"],
+    "destination" : "Libs",
+    "disabled" : false
+  },
+  "LibDualSpec-1.0" : {
+    "type" : "git",
+    "url" : "git://git.wowace.com/wow/libdualspec-1-0/mainline.git",
+    "folders" : [],
+    "destination" : "Libs",
+    "disabled" : false
+  },
+  "LibSharedMedia-3.0" : {
+    "type" : "svn",
+    "url" : "svn://svn.wowace.com/wow/libsharedmedia-3-0/mainline/trunk",
+    "folders" : ["LibSharedMedia-3.0"],
+    "destination" : "Libs",
+    "disabled" : false
+  }
+}
+
