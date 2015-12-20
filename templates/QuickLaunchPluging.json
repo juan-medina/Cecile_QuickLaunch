@@ -1,0 +1,8 @@
+{
+  "output_path" : "..\\src\\",
+  "templates_path" : ".",
+  "template_name" : "QuickLaunchPluging",
+  "variables" :  {
+    "name" : "Module"
+  }
+}
