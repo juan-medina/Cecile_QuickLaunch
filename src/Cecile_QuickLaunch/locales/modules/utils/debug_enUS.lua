@@ -3,7 +3,7 @@
 --
 
 --get the add-on engine
-local AddOnName, Engine = ...;
+local AddOnName = ...;
 
 --prepare locale
 local L = LibStub("AceLocale-3.0"):NewLocale(AddOnName, "enUS", true);

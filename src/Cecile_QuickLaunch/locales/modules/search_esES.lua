@@ -3,7 +3,7 @@
 --
 
 --get the add-on engine
-local AddOnName, Engine = ...;
+local AddOnName = ...;
 
 --Spanish or Latin America Spanish
 local L = LibStub("AceLocale-3.0"):NewLocale(AddOnName, "esES")

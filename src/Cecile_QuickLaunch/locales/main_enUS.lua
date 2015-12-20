@@ -3,7 +3,7 @@
 --
 
 --get the AddOn engine
-local AddOnName, Engine = ...;
+local AddOnName = ...;
 
 --force localization to Spanish (only for testing)
 --_G.GAME_LOCALE = "esES"

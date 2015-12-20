@@ -83,7 +83,7 @@ function mod:PopulateFlyouts()
 
                 if start and start>0 then
                   remain = duration - (GetTime() - start);
-                  searchableText = searchableText .. " ["..search:SecondsToClock(remain).."]";
+                  searchableText = searchableText .. " ["..search.SecondsToClock(remain).."]";
                 end
 
                 --add the text and function
