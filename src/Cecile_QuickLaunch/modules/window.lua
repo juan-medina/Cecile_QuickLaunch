@@ -1374,6 +1374,7 @@ function mod:Show(value)
     --if we actually shown, hide
     if self.mainFrame:IsShown() then
       self.mainFrame:Hide();
+      self.search:Wipe();
     end
   end
 

@@ -11,4 +11,6 @@ if not L then return; end
 
 --Items module
 L["PROFESSIONS_MODULE"] = "Professions"
-
+L["PROFESSIONS_OPEN"] = "Open"
+L["PROFESSIONS_OPEN_TOKEN"] = "Open Tag"
+L["PROFESSIONS_OPEN_TOKEN_DESC"] = "Change the open profession tag"
