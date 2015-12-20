@@ -489,6 +489,15 @@ end
 --prepare the secure button
 function mod:PrepareSecureButton(item,name,icon,help,start,duration,enable)
 
+  --if we are in combat display a message and return
+  if self.combat then
+    --get version
+    local Version = Engine.AddOn:GetModule("version");
+
+    print(string.format(L["WINDOW_ERROR_IN_COMBAT"],Version.Title));
+    return;
+  end
+
   self.secureButton.icon:SetTexture(icon);
 
   self.secureButton.help.text:SetText(string.format(help,
