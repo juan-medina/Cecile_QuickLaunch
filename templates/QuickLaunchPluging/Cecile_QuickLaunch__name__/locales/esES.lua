@@ -16,7 +16,8 @@ end
 
 --{{name}} module
 L["{{upper name}}"] = "{{name}}"
+L["{{upper name}}_NAME"] = "{{name}}"
 L["{{upper name}}_MODULE"] = "{{name}}"
 L["{{upper name}}_TOKEN"] = "{{name}} Token"
-L["{{upper name}}TOKEN_DESC"] = "Change the {{name}} Token"
+L["{{upper name}}_TOKEN_DESC"] = "Change the {{name}} Token"
 

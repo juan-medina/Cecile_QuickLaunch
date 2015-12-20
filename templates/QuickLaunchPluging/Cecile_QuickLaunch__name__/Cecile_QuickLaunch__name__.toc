@@ -1,8 +1,8 @@
 ## Interface: 60200
 ## Title: |cffffffffCecile|r_|cfffff569QuickLaunch|r{{name}}
-## Notes: Items module for |cffffffffCecile|r_|cfffff569QuickLaunch|r
+## Notes: {{name}} module for |cffffffffCecile|r_|cfffff569QuickLaunch|r
 ## Author: Cecile
-## Version: 1.0.1.release
+## Version: 1.0.0.release
 ## OptionalDeps:
 ## Dependencies: Cecile_QuickLaunch
 
