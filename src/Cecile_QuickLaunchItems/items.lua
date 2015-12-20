@@ -57,22 +57,22 @@ mod.Vars = {
 
 
 mod.slots = {"HeadSlot",
-    "NeckSlot",
-    "ShoulderSlot",
-    "BackSlot",
-    "ChestSlot",
-    "WristSlot",
-    "HandsSlot",
-    "WaistSlot",
-    "LegsSlot",
-    "FeetSlot",
-    "Finger0Slot",
-    "Finger1Slot",
-    "Trinket0Slot",
-    "Trinket1Slot",
-    "MainHandSlot",
-    "SecondaryHandSlot"
-  };
+  "NeckSlot",
+  "ShoulderSlot",
+  "BackSlot",
+  "ChestSlot",
+  "WristSlot",
+  "HandsSlot",
+  "WaistSlot",
+  "LegsSlot",
+  "FeetSlot",
+  "Finger0Slot",
+  "Finger1Slot",
+  "Trinket0Slot",
+  "Trinket1Slot",
+  "MainHandSlot",
+  "SecondaryHandSlot"
+};
 
 function mod:PopulateEquippedItems()
 
@@ -81,26 +81,24 @@ function mod:PopulateEquippedItems()
   local equippedToken = mod.Profile.equippedToken;
 
   --local vars
-  local iventoryId, itemId, icon, checkRelic, slot;
-  local name, link, quality, iLevel, reqLevel, class, subclass, maxStack, equipSlot, icon, vendorPrice;
-  local searchableText, start, duration, enable;
+  local iventoryId, itemId, name, icon, searchableText, remain, start, duration, enable, item;
 
   for _,slot in pairs(mod.slots) do
 
-    iventoryId, icon, checkRelic = GetInventorySlotInfo(slot);
+    iventoryId = _G.GetInventorySlotInfo(slot);
 
-    itemId = GetInventoryItemID("player", iventoryId);
+    itemId = _G.GetInventoryItemID("player", iventoryId);
 
     if itemId then
 
-      name, link, quality, iLevel, reqLevel, class, subclass, maxStack, equipSlot, icon, vendorPrice = GetItemInfo(itemId);
+      name, _, _, _, _, _, _, _, _, icon = _G.GetItemInfo(itemId);
 
       searchableText = token .. ": " .. name .. " (" .. equippedToken .. ")";
 
-      start, duration, enable = GetItemCooldown(itemId);
+      start, duration, enable = _G.GetItemCooldown(itemId);
 
       if start and start>0 and enable==1 then
-        remain = duration - (GetTime() - start);
+        remain = duration - (_G.GetTime() - start);
         searchableText = searchableText .. " ["..search.SecondsToClock(remain).."]";
       end
 
@@ -108,7 +106,7 @@ function mod:PopulateEquippedItems()
       item = { text = searchableText , id=itemId, type = "item", icon = icon};
 
       --insert the result
-      table.insert(mod.items,item);
+      table.insert(self.items,item);
 
     end
 
@@ -126,21 +124,21 @@ function mod:PopulateBagsItems()
   --local vars
   local savedItems = {}
 
-  local item, index, numSlots;
-  local name, link, itemId, slot, icon;
-  local searchableText, start, duration, enable;
+  local numSlots;
+  local name, link, itemId, icon;
+  local remain, start, duration, enable;
 
   --add the items in a list to avoid duplicated items
   for index = 0, _G.NUM_BAG_SLOTS do
 
-    numSlots = GetContainerNumSlots(index);
+    numSlots = _G.GetContainerNumSlots(index);
 
     for slot = 1, numSlots do
 
-      link = GetContainerItemLink(index, slot);
+      link = _G.GetContainerItemLink(index, slot);
 
       if link then
-        name = GetItemInfo(link);
+        name = _G.GetItemInfo(link);
 
         if name then
 
@@ -156,28 +154,26 @@ function mod:PopulateBagsItems()
 
   local searchableText, item;
 
-  for name, link in pairs(savedItems) do
+  for savedName, savedLink in pairs(savedItems) do
 
-    item = nil;
+    icon = select(10,_G.GetItemInfo(savedLink))
 
-    icon = select(10,GetItemInfo(link))
+    itemId = select(2, _G.strsplit(":", savedLink));
 
-    itemId = select(2, strsplit(":", link));
+    searchableText = token .. ": " .. savedName .. " (" .. bagsToken .. ")";
 
-    searchableText = token .. ": " .. name .. " (" .. bagsToken .. ")";
-
-    start, duration, enable = GetItemCooldown(itemId);
+    start, duration, enable = _G.GetItemCooldown(itemId);
 
     if start and start>0 and enable==1 then
-      remain = duration - (GetTime() - start);
-      searchableText = searchableText .. " ["..search:SecondsToClock(remain).."]";
+      remain = duration - (_G.GetTime() - start);
+      searchableText = searchableText .. " ["..search.SecondsToClock(remain).."]";
     end
 
     --add the text and function
     item = { text = searchableText , id=itemId, type = "item", icon = icon};
 
     --insert the result
-    table.insert(mod.items,item);
+    table.insert(self.items,item);
 
   end
 
@@ -189,11 +185,11 @@ function mod:Refresh()
   debug("refreshing items data");
 
   --populate data
-  if mod.Profile.equipped then
-    mod:PopulateEquippedItems();
+  if self.Profile.equipped then
+    self:PopulateEquippedItems();
   end
-  if mod.Profile.bags then
-    mod:PopulateBagsItems();
+  if self.Profile.bags then
+    self:PopulateBagsItems();
   end
 
   debug("data refreshed");

@@ -51,102 +51,99 @@ mod.Vars = {
 --summon a mount
 function mod.summonMount(item)
 
-	--summon the mount
-	C_MountJournal.Summon(item.id);
+  --summon the mount
+  _G.C_MountJournal.Summon(item.id);
 
 end
 
 --dismount
-function mod.dismmissMount(item)
+function mod.dismmissMount()
 
-	--dismount
-	C_MountJournal.Dismiss();
+  --dismount
+  _G.C_MountJournal.Dismiss();
 
 end
 
 --create the list of mounts
 function mod:PopulateMounts()
 
-	---local variables
-	local index,item;
+  --options
+  local token = mod.Profile.token;
+  local favorites = mod.Profile.favorites;
+  local noFavorites = mod.Profile.noFavorites;
+  local favoriteTag = mod.Profile.favoriteTag;
 
-	--options
-	local token = mod.Profile.token;
-	local favorites = mod.Profile.favorites;
-	local noFavorites = mod.Profile.noFavorites;
-	local favoriteTag = mod.Profile.favoriteTag;
+  --get max num of mounts
+  local numMounts = _G.C_MountJournal.GetNumMounts();
 
-	--get max num of mounts
-	local numMounts = C_MountJournal.GetNumMounts();
+  --to format the text
+  local searchableText, item;
 
-	--to format the text
-	local searchableText = "";
+  --we are not mounted
+  local mounted = false;
 
-	--we are not mounted
-	local mounted = false;
+  --loop mounts
+  for index = 1, numMounts do
 
-	--loop mounts
-	for index = 1, numMounts do
+    --get the mount details
+    local creatureName, _, icon, active, isUsable, _, isFavorite, _, _, _, isCollected = _G.C_MountJournal.GetMountInfo(index);
 
-		--get the mount details
-		local creatureName, spellID, icon, active, isUsable, sourceType, isFavorite, isFactionSpecific, faction, hideOnChar, isCollected = C_MountJournal.GetMountInfo(index);
+    --if its usable (faction, profesion, etc) and we have it
+    if isUsable and isCollected then
 
-		--if its usable (faction, profesion, etc) and we have it
-		if isUsable and isCollected then
+      --if its active we are mounted
+      if active then
+        mounted = true;
+      end
 
-			--if its active we are mounted
-			if active then
-				mounted = true;
-			end
+      searchableText = nil;
 
-			searchableText = nil;
+      if isFavorite and favorites then
 
-			if isFavorite and favorites then
+        searchableText = token .. ": " .. creatureName .. " (".. favoriteTag .. ")";
 
-				searchableText = token .. ": " .. creatureName .. " (".. favoriteTag .. ")";
+      elseif not(isFavorite) and noFavorites then
 
-			elseif not(isFavorite) and noFavorites then
+        searchableText = token .. ": " .. creatureName;
 
-				searchableText = token .. ": " .. creatureName;
+      end
 
-			end
+      if searchableText then
 
-			if searchableText then
+        --set our function and text
+        item = { text = searchableText , id=index, func = mod.summonMount, icon = icon};
 
-				--set our function and text
-	    		item = { text = searchableText , id=index, func = mod.summonMount, icon = icon};
+        --add the item
+        table.insert(self.items,item);
 
-	    		--add the item
-	    		table.insert(mod.items,item);
+      end
 
-	    	end
+    end
 
-	    end
+  end
 
-	end
+  --add on top a search for random mount
+  searchableText = token .. ": " .. L["MOUNT_RANDOM"] .. " (".. favoriteTag .. ")";
+  item = { text = searchableText , id=0, func = mod.summonMount, icon = "Interface\\Icons\\INV_Misc_QuestionMark"};
+  table.insert(mod.items,1,item);
 
-	--add on top a search for random mount
-	searchableText = token .. ": " .. L["MOUNT_RANDOM"] .. " (".. favoriteTag .. ")";
-	item = { text = searchableText , id=0, func = mod.summonMount, icon = "Interface\\Icons\\INV_Misc_QuestionMark"};
-	table.insert(mod.items,1,item);
-
-	--if we are mounted add a search text for dismount on top
-	if mounted then
-		searchableText = token .. ": " .. L["MOUNT_DISMOUNT"];
-    	item = { text = searchableText , id=index, func = mod.dismmissMount};
-    	table.insert(mod.items,1,item);
-	end
+  --if we are mounted add a search text for dismount on top
+  if mounted then
+    searchableText = token .. ": " .. L["MOUNT_DISMOUNT"];
+    item = { text = searchableText , id=0, func = mod.dismmissMount};
+    table.insert(mod.items,1,item);
+  end
 
 end
 
 --refresh the data
 function mod:Refresh()
 
-	debug("refreshing mount data");
+  debug("refreshing mount data");
 
-	--populate the mounts
-	mod:PopulateMounts();
+  --populate the mounts
+  self:PopulateMounts();
 
-	debug("data refreshed");
+  debug("data refreshed");
 
 end

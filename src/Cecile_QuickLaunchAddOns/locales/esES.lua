@@ -3,9 +3,6 @@
 --
 
 --get the add-on engine
-local AddOnName, Engine = ...;
-
---get the add-on engine
 local Engine = _G.Cecile_QuickLaunch;
 
 --Spanish or Latin America Spanish

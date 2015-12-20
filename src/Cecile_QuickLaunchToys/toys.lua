@@ -58,18 +58,17 @@ function mod:Populate()
   local favoriteTag = mod.Profile.favoriteTag;
 
   --get number of toys
-  C_ToyBox.FilterToys();
-  local numToys = C_ToyBox.GetNumToys();
+  _G.C_ToyBox.FilterToys();
+  local numToys = _G.C_ToyBox.GetNumToys();
 
   --local vars
-  local idx,toyID, name, icon, fav,start, duration, enable, remain, item;
+  local idx,toyID, name, icon, start, duration, remain;
+  local item, searchableText, isFavorite;
 
   for index = 1, numToys do
 
-    item = nil;
-
-    idx = C_ToyBox.GetToyFromIndex(index);
-    toyID, name, icon, isFavorite = C_ToyBox.GetToyInfo(idx);
+    idx = _G.C_ToyBox.GetToyFromIndex(index);
+    toyID, name, icon, isFavorite = _G.C_ToyBox.GetToyInfo(idx);
 
     if name ~= nil and toyID ~= nil then
       if _G.PlayerHasToy(toyID) then
@@ -89,10 +88,10 @@ function mod:Populate()
         if searchableText then
 
           --get the cooldown
-          start, duration, enable = GetItemCooldown(toyID);
+          start, duration = _G.GetItemCooldown(toyID);
 
           if start>0 then
-            remain = duration - (GetTime() - start);
+            remain = duration - (_G.GetTime() - start);
             searchableText = searchableText .. " ["..search.SecondsToClock(remain).."]";
           end
 
@@ -100,7 +99,7 @@ function mod:Populate()
           item = { text = searchableText , id=toyID, type = "item", icon = icon};
 
           --insert the result
-          table.insert(mod.items,item);
+          table.insert(self.items,item);
 
         end
 
@@ -119,7 +118,7 @@ function mod:Refresh()
   debug("refreshing toys data");
 
   --populate data
-  mod:Populate();
+  self:Populate();
 
   debug("data refreshed");
 

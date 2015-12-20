@@ -35,7 +35,7 @@ mod.Vars = {
 };
 
 --create and stack with push and pop
-function mod:CreateStack()
+function mod.CreateStack()
   -- stack table
   local t = {};
 
@@ -54,16 +54,16 @@ function mod:CreateStack()
   end
 
   -- pop a value from the stack
-  function t:pop(num)
+  function t:pop(_num)
 
     -- get num values from stack
-    local num = num or 1
+    local num = _num or 1
 
     -- return table
     local entries = {};
 
     -- get values into entries
-    for i = 1, num do
+    for _ = 1, num do
       -- get last entry
       if #self._et ~= 0 then
         table.insert(entries, self._et[#self._et]);
@@ -91,7 +91,7 @@ function mod:CreateStack()
 
   --iterate values
   function t:iterate()
-	return pairs(self._et);
+    return pairs(self._et);
   end
 
   return t;
@@ -100,85 +100,85 @@ end
 
 function mod.openBlizConfig(item)
 
-	--open config twice (yes, if not does not work always)
-	InterfaceOptionsFrame_OpenToCategory(item.id);
-	InterfaceOptionsFrame_OpenToCategory(item.id);
+  --open config twice (yes, if not does not work always)
+  _G.InterfaceOptionsFrame_OpenToCategory(item.id);
+  _G.InterfaceOptionsFrame_OpenToCategory(item.id);
 
 end
 
 --help function that remove wow color codes
-function mod:RemoveColors(line)
-	local str=line;
-	local k,v;
+function mod.RemoveColors(line)
 
-	local escapes = {
-		["|c%x%x%x%x%x%x%x%x"] = "", -- color start
-		["|c%x%x%x%x%x%x"] = "", -- color start (w/o alpha)
-		["|r"] = "", -- color end
-	}
+  local str=line;
 
-    for k, v in pairs(escapes) do
-        str = gsub(str, k, v);
-    end
+  local escapes = {
+    ["|c%x%x%x%x%x%x%x%x"] = "", -- color start
+    ["|c%x%x%x%x%x%x"] = "", -- color start (w/o alpha)
+    ["|r"] = "", -- color end
+  }
 
-    return str;
+  for k, v in pairs(escapes) do
+    str = _G.gsub(str, k, v);
+  end
+
+  return str;
 
 end
 
 --create the list of AddOns config (blizzard)
 function mod:PopulateAddonsConfig()
 
-	--local vars
-	local index,frame, parentText, searchableText,name,k,v;
+  --local vars
+  local searchableText, name, item;
 
-	--options
-	local subsets = mod.Profile.subsets;
-	local token = mod.Profile.token;
+  --options
+  local subsets = self.Profile.subsets;
+  local token = self.Profile.token;
 
-	--create an stack
-	local stack = mod:CreateStack();
+  --create an stack
+  local stack = self.CreateStack();
 
-	local lastParent = nil;
+  local lastParent = nil;
 
-	--loop the tables
-	for index,frame in pairs(_G.INTERFACEOPTIONS_ADDONCATEGORIES) do
+  --loop the tables
+  for _,frame in pairs(_G.INTERFACEOPTIONS_ADDONCATEGORIES) do
 
-		if not (lastParent==frame.parent) then
-			lastParent = stack:pop();
-		else
-			lastParent = frame.parent;
-		end
+    if not (lastParent==frame.parent) then
+      lastParent = stack:pop();
+    else
+      lastParent = frame.parent;
+    end
 
-		--concatenate the parents names
-		name = ""
-		for k,v in stack:iterate() do
-			name = name .. mod:RemoveColors(v).." / ";
-		end
+    --concatenate the parents names
+    name = ""
+    for _,v in stack:iterate() do
+      name = name .. self.RemoveColors(v).." / ";
+    end
 
-		--remove colors
-		name = name .. mod:RemoveColors(frame.name);
+    --remove colors
+    name = name .. self.RemoveColors(frame.name);
 
-		--format the search text
-		searchableText = token..": "..name;
+    --format the search text
+    searchableText = token..": "..name;
 
-		--if its root or we want to return subsets
-		if (frame.parent==nil) or (subsets) then
-			--setup item
-			item = { text = searchableText , id=frame, func = mod.openBlizConfig};
+    --if its root or we want to return subsets
+    if (frame.parent==nil) or (subsets) then
+      --setup item
+      item = { text = searchableText , id=frame, func = mod.openBlizConfig};
 
-			--add the item
-			table.insert(mod.items,item);
-		end
+      --add the item
+      table.insert(self.items,item);
+    end
 
-		if frame.hasChildren then
-			stack:push(frame.name);
-			lastParent = frame.name;
-		end
+    if frame.hasChildren then
+      stack:push(frame.name);
+      lastParent = frame.name;
+    end
 
-	end
+  end
 
-	--sort the  talble
-	table.sort(mod.items, function(a,b) return a.text < b.text end);
+  --sort the  talble
+  table.sort(mod.items, function(a,b) return a.text < b.text end);
 
 
 end
@@ -186,11 +186,11 @@ end
 --refresh the data
 function mod:Refresh()
 
-	debug("refreshing Addons config data");
+  debug("refreshing Addons config data");
 
-	--populate Blizzard Addons config
-	mod:PopulateAddonsConfig();
+  --populate Blizzard Addons config
+  self:PopulateAddonsConfig();
 
-	debug("data refreshed");
+  debug("data refreshed");
 
 end

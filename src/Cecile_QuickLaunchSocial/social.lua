@@ -86,61 +86,61 @@ function mod:PopulateFriends()
   local returnInvite = mod.Profile.returnInvite;
   local whispersToken = mod.Profile.whispersToken;
   local inviteToken = mod.Profile.inviteToken;
-  local searchableText = "";
-  local charText = "";
-  local index,item;
+  local searchableText;
+  local charText;
+  local item;
 
-  local numFriends, numFriendsOnline = GetNumFriends();
+  local numFriends = _G.GetNumFriends();
 
   for index = 1, numFriends do
-      local name, level, class, area, connected, status, note, RAF = GetFriendInfo(index);
+    local name, level, class, _, connected = _G.GetFriendInfo(index);
 
-      if connected then
+    if connected then
 
-        --base text
-        charText = name .. " [" .. level .. " " .. class .. "]";
+      --base text
+      charText = name .. " [" .. level .. " " .. class .. "]";
 
 
-        if returnWhispers then
-          searchableText = whispersToken .. ": " .. charText;
+      if returnWhispers then
+        searchableText = whispersToken .. ": " .. charText;
 
-          --add the text and function
-          item = { text = searchableText , id=name, func = mod.whisper };
+        --add the text and function
+        item = { text = searchableText , id=name, func = mod.whisper };
 
-          --insert the result
-          table.insert(mod.items,item);
-        end
-
-        if returnInvite then
-          searchableText = inviteToken .. ": " .. charText;
-
-          --add the text and function
-          item = { text = searchableText , id=name, func = mod.invite };
-
-          --insert the result
-          table.insert(mod.items,item);
-        end
-
+        --insert the result
+        table.insert(mod.items,item);
       end
+
+      if returnInvite then
+        searchableText = inviteToken .. ": " .. charText;
+
+        --add the text and function
+        item = { text = searchableText , id=name, func = mod.invite };
+
+        --insert the result
+        table.insert(self.items,item);
+      end
+
+    end
 
   end
 
 end
 
-function mod:GetClientIcon(client)
-    if ( client == _G.BNET_CLIENT_WOW ) then
-        return "Interface\\FriendsFrame\\Battlenet-WoWicon";
-    elseif ( client == _G.BNET_CLIENT_SC2 ) then
-        return "Interface\\FriendsFrame\\Battlenet-Sc2icon";
-    elseif ( client == _G.BNET_CLIENT_D3 ) then
-        return "Interface\\FriendsFrame\\Battlenet-D3icon";
-    elseif ( client == _G.BNET_CLIENT_WTCG ) then
-        return "Interface\\FriendsFrame\\Battlenet-WTCGicon";
-    elseif ( client == _G.BNET_CLIENT_HEROES ) then
-        return "Interface\\FriendsFrame\\Battlenet-HotSicon";
-    else
-        return "Interface\\FriendsFrame\\Battlenet-Battleneticon";
-    end
+function mod.GetClientIcon(client)
+  if ( client == _G.BNET_CLIENT_WOW ) then
+    return "Interface\\FriendsFrame\\Battlenet-WoWicon";
+  elseif ( client == _G.BNET_CLIENT_SC2 ) then
+    return "Interface\\FriendsFrame\\Battlenet-Sc2icon";
+  elseif ( client == _G.BNET_CLIENT_D3 ) then
+    return "Interface\\FriendsFrame\\Battlenet-D3icon";
+  elseif ( client == _G.BNET_CLIENT_WTCG ) then
+    return "Interface\\FriendsFrame\\Battlenet-WTCGicon";
+  elseif ( client == _G.BNET_CLIENT_HEROES ) then
+    return "Interface\\FriendsFrame\\Battlenet-HotSicon";
+  else
+    return "Interface\\FriendsFrame\\Battlenet-Battleneticon";
+  end
 end
 
 --populate friends
@@ -151,64 +151,64 @@ function mod:PopulateBNetFriends()
   local returnInvite = mod.Profile.returnInvite;
   local whispersToken = mod.Profile.whispersToken;
   local inviteToken = mod.Profile.inviteToken;
-  local searchableText = "";
-  local charText = "";
-  local index;
+  local searchableText;
+  local charText;
+  local item;
 
-  local playerFaction, localizedFaction = UnitFactionGroup("player");
+  local playerFaction = _G.UnitFactionGroup("player");
 
-  local numFriends =  BNGetNumFriends();
+  local numFriends =  _G.BNGetNumFriends();
 
   for index = 1, numFriends do
 
-      local presenceID, presenceName, battleTag, isBattleTagPresence, toonName, toonID, client, isOnline, lastOnline, isAFK, isDND, messageText, noteText, isRIDFriend, broadcastTime, canSoR = BNGetFriendInfo(index);
-      local icon = mod:GetClientIcon(client);
+    local presenceID, presenceName, battleTag, _, toonName, toonID, client, isOnline = _G.BNGetFriendInfo(index);
+    local icon = mod.GetClientIcon(client);
 
-      if isOnline then
+    if isOnline then
 
-        if client == _G.BNET_CLIENT_WOW then
+      if client == _G.BNET_CLIENT_WOW then
 
-          local hasFocus, _, _, realmName, realmID, faction, race, class, guild, zoneName, level, gameText = BNGetToonInfo(toonID or presenceID);
-          --base text
-          charText = battleTag .. " (".. toonName ..  ")  [" .. level .. " " .. class .. "]";
+        local _, _, _, _, _, faction, _, class, _, _, level, _ = _G.BNGetToonInfo(toonID or presenceID);
+        --base text
+        charText = battleTag .. " (".. toonName ..  ")  [" .. level .. " " .. class .. "]";
 
-          if returnWhispers then
-            searchableText = whispersToken .. ": " .. charText;
+        if returnWhispers then
+          searchableText = whispersToken .. ": " .. charText;
 
-            --add the text and function
-            item = { text = searchableText , id=presenceName, func = mod.whisper, icon=icon };
+          --add the text and function
+          item = { text = searchableText , id=presenceName, func = mod.whisper, icon=icon };
 
-            --insert the result
-            table.insert(mod.items,item);
-          end
+          --insert the result
+          table.insert(mod.items,item);
+        end
 
-          if returnInvite and playerFaction==faction then
-            searchableText = inviteToken .. ": " .. charText;
+        if returnInvite and playerFaction==faction then
+          searchableText = inviteToken .. ": " .. charText;
 
-            --add the text and function
-            item = { text = searchableText , id=toonID, func = mod.invite, icon=icon };
+          --add the text and function
+          item = { text = searchableText , id=toonID, func = mod.invite, icon=icon };
 
-            --insert the result
-            table.insert(mod.items,item);
+          --insert the result
+          table.insert(mod.items,item);
 
-          end
-        else
-          --base text
-          charText = battleTag .. " [".. client ..  "]";
+        end
+      else
+        --base text
+        charText = battleTag .. " [".. client ..  "]";
 
-          if returnWhispers then
-            searchableText = whispersToken .. ": " .. charText;
+        if returnWhispers then
+          searchableText = whispersToken .. ": " .. charText;
 
-            --add the text and function
-            item = { text = searchableText , id=presenceName, func = mod.whisper, icon=icon };
+          --add the text and function
+          item = { text = searchableText , id=presenceName, func = mod.whisper, icon=icon };
 
-            --insert the result
-            table.insert(mod.items,item);
-          end
-
+          --insert the result
+          table.insert(self.items,item);
         end
 
       end
+
+    end
 
   end
 
@@ -219,12 +219,12 @@ end
 --populate convert items
 function mod:PopulateConvert()
 
-  if (GetNumGroupMembers() > 0) and (UnitIsGroupLeader("player")) then
+  if (_G.GetNumGroupMembers() > 0) and (_G.UnitIsGroupLeader("player")) then
 
     local item,searchableText;
     local convertToken = mod.Profile.convertToken;
 
-    if IsInRaid() and (GetNumGroupMembers()<6) then
+    if _G.IsInRaid() and (_G.GetNumGroupMembers()<6) then
 
       --base text
       searchableText = convertToken .. ": " .. L["SOCIAL_CONVERT_TO_PARTY"];
@@ -233,9 +233,9 @@ function mod:PopulateConvert()
       item = { text = searchableText , func = _G.ConvertToParty };
 
       --insert the result
-      table.insert(mod.items,item);
+      table.insert(self.items,item);
 
-    elseif IsInGroup() then
+    elseif _G.IsInGroup() then
 
       --base text
       searchableText = convertToken .. ": " .. L["SOCIAL_CONVERT_TO_RAID"];
@@ -244,7 +244,7 @@ function mod:PopulateConvert()
       item = { text = searchableText , func = _G.ConvertToRaid };
 
       --insert the result
-      table.insert(mod.items,item);
+      table.insert(self.items,item);
 
     end
 
@@ -255,18 +255,18 @@ end
 --refresh the data
 function mod:Refresh()
 
-	debug("refreshing social data");
+  debug("refreshing social data");
 
   --return specializations
-  if mod.Profile.returnWhispers or mod.Profile.returnInvite then
-    mod:PopulateFriends();
-    mod:PopulateBNetFriends();
+  if self.Profile.returnWhispers or self.Profile.returnInvite then
+    self:PopulateFriends();
+    self:PopulateBNetFriends();
   end
 
-  if mod.Profile.returnConvert then
-    mod:PopulateConvert();
+  if self.Profile.returnConvert then
+    self:PopulateConvert();
   end
 
-	debug("data refreshed");
+  debug("data refreshed");
 
 end

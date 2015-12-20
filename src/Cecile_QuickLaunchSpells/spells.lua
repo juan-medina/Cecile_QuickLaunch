@@ -34,65 +34,63 @@ function mod:PopulateFlyouts()
   local token = mod.Profile.token;
 
   --local vars
-  local numFlyouts,flyoutNumber,flyoutID,flyoutName, description, numSlots, isFlyoutKnown,item;
-  local spellID, overrideSpellID, isKnown, spellName, slotSpecID;
-  local name, rank, icon, castingTime, minRange, maxRange, spellID;
+  local numFlyouts,flyoutID,flyoutName, numSlots, isFlyoutKnown,item;
+  local isKnown, spellName;
+  local name, rank, icon, spellID;
   local petIndex, petName;
-  local searchableText, start, duration, enable, slot;
+  local searchableText, remain, start, duration;
+  local _;
 
-  numFlyouts = GetNumFlyouts();
+  numFlyouts = _G.GetNumFlyouts();
 
   for flyoutNumber=1,numFlyouts do
 
-    flyoutID = GetFlyoutID(flyoutNumber);
-    flyoutName, description, numSlots, isFlyoutKnown = GetFlyoutInfo(flyoutID);
+    flyoutID = _G.GetFlyoutID(flyoutNumber);
+    flyoutName, _ , numSlots, isFlyoutKnown = _G.GetFlyoutInfo(flyoutID);
 
     if isFlyoutKnown then
 
       for slot=1,numSlots do
 
-          spellID, overrideSpellID, isKnown, spellName, slotSpecID = GetFlyoutSlotInfo(flyoutID, slot);
+        spellID, _, isKnown, spellName = _G.GetFlyoutSlotInfo(flyoutID, slot);
 
-          if isKnown then
+        if isKnown then
 
-            name, rank, icon, castingTime, minRange, maxRange, spellID = GetSpellInfo(spellID);
+          name, rank, icon, _, _, _, spellID = _G.GetSpellInfo(spellID);
 
-            if(name) then
+          if(name) then
 
-              item = nil;
-              petIndex, petName = GetCallPetSpellInfo(spellID);
+            petIndex, petName = _G.GetCallPetSpellInfo(spellID);
 
-              if not (petIndex and (not petName or petName == "")) then
+            if not (petIndex and (not petName or petName == "")) then
 
-                --base text
-                searchableText = token .. ": ";
+              --base text
+              searchableText = token .. ": ";
 
-                --complete the text
-                if petName then
-                  searchableText = searchableText .. flyoutName .. " " ..petName;
+              --complete the text
+              if petName then
+                searchableText = searchableText .. flyoutName .. " " ..petName;
+              else
+                if rank and not(rank=="") then
+                  searchableText = searchableText .. spellName .. " (" ..rank..")";
                 else
-                  if rank and not(rank=="") then
-                    searchableText = searchableText .. spellName .. " (" ..rank..")";
-                  else
-                    searchableText = searchableText .. spellName ;
-                  end
+                  searchableText = searchableText .. spellName ;
                 end
-
-                --get the cooldown
-                start, duration, enable = GetSpellCooldown(spellID);
-
-                if start and start>0 then
-                  remain = duration - (GetTime() - start);
-                  searchableText = searchableText .. " ["..search.SecondsToClock(remain).."]";
-                end
-
-                --add the text and function
-                item = { text = searchableText , id=spellID, type = "spell", icon=icon};
-
-                --insert the result
-                table.insert(mod.items,item);
-
               end
+
+              --get the cooldown
+              start, duration = _G.GetSpellCooldown(spellID);
+
+              if start and start>0 then
+                remain = duration - (_G.GetTime() - start);
+                searchableText = searchableText .. " ["..search.SecondsToClock(remain).."]";
+              end
+
+              --add the text and function
+              item = { text = searchableText , id=spellID, type = "spell", icon=icon};
+
+              --insert the result
+              table.insert(self.items,item);
 
             end
 
@@ -101,6 +99,8 @@ function mod:PopulateFlyouts()
         end
 
       end
+
+    end
 
   end
 
@@ -113,27 +113,26 @@ function mod:PopulateNormalSpells()
   local token = mod.Profile.token;
 
   --local vars
-  local name, rank, icon, castingTime, minRange, maxRange, spellID, offset, numEntries, isGuild, offspecID;
-  local index, searchableText, start, duration, enable;
+  local name, rank, icon, spellID, offset, numEntries, offspecID;
+  local searchableText, remain, start, duration, enable, item;
 
   --get all spell tabs
-  local numTabs = GetNumSpellTabs();
+  local numTabs = _G.GetNumSpellTabs();
+  local _;
 
   for tabID=1,numTabs do
 
-    name, icon, offset, numEntries, isGuild, offspecID = GetSpellTabInfo(tabID)
+    _, _, offset, numEntries, _, offspecID = _G.GetSpellTabInfo(tabID)
 
     if offspecID == 0 then
 
       for index = offset + 1, offset + numEntries do
 
-        if not IsPassiveSpell(index, BOOKTYPE_SPELL) then
+        if not _G.IsPassiveSpell(index, _G.BOOKTYPE_SPELL) then
 
-          name, rank, icon, castingTime, minRange, maxRange, spellID = GetSpellInfo(index, BOOKTYPE_SPELL);
+          name, rank, icon, _, _, _, spellID = _G.GetSpellInfo(index, _G.BOOKTYPE_SPELL);
 
           if(name) then
-
-            item = nil;
 
             --base text
             searchableText = token .. ": ";
@@ -146,19 +145,19 @@ function mod:PopulateNormalSpells()
             end
 
             --get the cooldown
-            start, duration, enable = GetSpellCooldown(index, BOOKTYPE_SPELL);
+            start, duration, enable = _G.GetSpellCooldown(index, _G.BOOKTYPE_SPELL);
 
             if start and start>0 and enable==1 then
 
-              remain = duration - (GetTime() - start);
-              searchableText = searchableText .. " ["..search:SecondsToClock(remain).."]";
+              remain = duration - (_G.GetTime() - start);
+              searchableText = searchableText .. " ["..search.SecondsToClock(remain).."]";
             end
 
             --add the text and function
             item = { text = searchableText , id=spellID, type = "spell", icon=icon};
 
             --insert the result
-            table.insert(mod.items,item);
+            table.insert(self.items,item);
           end
         end
 
@@ -178,23 +177,21 @@ function mod:PopulateProfession(profession)
   end
 
   --local vars
-  local item , searchableText, start, duration, enable;
+  local item , searchableText, remain, start, duration, enable;
 
-  local prefessionName, icon, rank, maxRank, numEntries, offset, skillLine, rankModifier, specializationIndex, specializationOffset;
+  local prefessionName, icon, rank, numEntries, offset, name;
 
-  local castingTime, minRange, maxRange, spellID;
+  local spellID, _;
 
-  prefessionName, icon, rank, maxRank, numEntries, offset, skillLine, rankModifier, specializationIndex, specializationOffset = GetProfessionInfo(profession);
+  prefessionName, _, _, _, numEntries, offset, _, _, _, _ = _G.GetProfessionInfo(profession);
 
   for index = offset + 1, offset + numEntries do
 
-    if not IsPassiveSpell(index, BOOKTYPE_PROFESSION) then
+    if not _G.IsPassiveSpell(index, _G.BOOKTYPE_PROFESSION) then
 
-      name, rank, icon, castingTime, minRange, maxRange, spellID = GetSpellInfo(index, BOOKTYPE_PROFESSION);
+      name, rank, icon, _, _, _, spellID = _G.GetSpellInfo(index, _G.BOOKTYPE_PROFESSION);
 
       if(name) then
-
-        item = nil;
 
         --base text
         searchableText = prefessionName .. ": ";
@@ -207,19 +204,19 @@ function mod:PopulateProfession(profession)
         end
 
         --get the cooldown
-        start, duration, enable = GetSpellCooldown(index, BOOKTYPE_PROFESSION);
+        start, duration, enable = _G.GetSpellCooldown(index, _G.BOOKTYPE_PROFESSION);
 
         if start and start>0 and enable==1 then
 
-          remain = duration - (GetTime() - start);
-          searchableText = searchableText .. " ["..search:SecondsToClock(remain).."]";
+          remain = duration - (_G.GetTime() - start);
+          searchableText = searchableText .. " ["..search.SecondsToClock(remain).."]";
         end
 
         --add the text and function
         item = { text = searchableText , id=spellID, type = "spell", icon=icon};
 
         --insert the result
-        table.insert(mod.items,item);
+        table.insert(self.items,item);
       end
     end
 
@@ -229,11 +226,10 @@ end
 
 function mod:PopulateProfessions(...)
 
-  local i;
   local n = select('#', ...);
 
   for i = 1, n do
-    mod:PopulateProfession(select(i, ...));
+    self:PopulateProfession(select(i, ...));
   end
 
 end
@@ -244,9 +240,9 @@ function mod:Refresh()
   debug("refreshing spells data");
 
   --populate data
-  mod:PopulateFlyouts();
-  mod:PopulateNormalSpells();
-  mod:PopulateProfessions(_G.GetProfessions());
+  self:PopulateFlyouts();
+  self:PopulateNormalSpells();
+  self:PopulateProfessions(_G.GetProfessions());
 
   debug("data refreshed");
 

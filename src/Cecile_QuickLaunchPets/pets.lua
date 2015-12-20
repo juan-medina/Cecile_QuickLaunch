@@ -51,99 +51,99 @@ mod.Vars = {
 --summon a pet if id==0 its random
 function mod.summonPet(item)
 
-	--check if its summon normal o random (favorite)
-	if(item.id==0) then
-		C_PetJournal.SummonRandomPet(false);
-	else
-		C_PetJournal.SummonPetByGUID(item.id);
-	end
+  --check if its summon normal o random (favorite)
+  if(item.id==0) then
+    _G.C_PetJournal.SummonRandomPet(false);
+  else
+    _G.C_PetJournal.SummonPetByGUID(item.id);
+  end
 
 end
 
 --populate the list
 function mod:PopulatePets()
 
-	--lcoal vars
-	local index,item,creatureName;
+  --lcoal vars
+  local item,creatureName;
 
-	--options
-	local token = mod.Profile.token;
-	local favorites = mod.Profile.favorites;
-	local noFavorites = mod.Profile.noFavorites;
-	local favoriteTag = mod.Profile.favoriteTag;
+  --options
+  local token = mod.Profile.token;
+  local favorites = mod.Profile.favorites;
+  local noFavorites = mod.Profile.noFavorites;
+  local favoriteTag = mod.Profile.favoriteTag;
 
-	--get number of pets
-	local numPets = C_PetJournal.GetNumPets();
+  --get number of pets
+  local numPets = _G.C_PetJournal.GetNumPets();
 
-	--for formating the text
-	local searchableText = "";
+  --for formating the text
+  local searchableText;
 
-	--loop the pets
-	for index = 1, numPets do
-		local petID, speciesID, owned, customName, level, isFavorite, isRevoked, speciesName, icon, petType, companionID, tooltip, description, isWild, canBattle, isTradeable, isUnique, obtainable = C_PetJournal.GetPetInfoByIndex(index)
+  --loop the pets
+  for index = 1, numPets do
+    local petID, _, owned, customName, _, isFavorite, _, speciesName, icon = _G.C_PetJournal.GetPetInfoByIndex(index)
 
-		--if we own the pet
-		if owned then
+    --if we own the pet
+    if owned then
 
 
-			searchableText = nil;
+      searchableText = nil;
 
-			creatureName = speciesName .. (customName and ( " [" .. customName .. "]" ) or "");
+      creatureName = speciesName .. (customName and ( " [" .. customName .. "]" ) or "");
 
-			if isFavorite and favorites then
+      if isFavorite and favorites then
 
-				searchableText = token .. ": " .. creatureName .. " (".. favoriteTag .. ")";
+        searchableText = token .. ": " .. creatureName .. " (".. favoriteTag .. ")";
 
-			elseif not(isFavorite) and noFavorites then
+      elseif not(isFavorite) and noFavorites then
 
-				searchableText = token .. ": " .. creatureName;
+        searchableText = token .. ": " .. creatureName;
 
-			end
+      end
 
-			if searchableText then
+      if searchableText then
 
-				--add the text and function
-	    		item = { text = searchableText , id=petID, func = mod.summonPet, icon = icon ;};
+        --add the text and function
+        item = { text = searchableText , id=petID, func = mod.summonPet, icon = icon ;};
 
-	    		--insert the result
-	    		table.insert(mod.items,item);
+        --insert the result
+        table.insert(self.items,item);
 
-	    	end
+      end
 
-		end
+    end
 
-	end
+  end
 
-	--get the GUID for summoned pet
-	local summonedPetGUID = C_PetJournal.GetSummonedPetGUID();
+  --add a random favorite pet on top
+  searchableText = token .. ": " .. L["PETS_RANDOM"] .. " (".. favoriteTag .. ")";
+  item = { text = searchableText , id=0, func = mod.summonPet, icon = "Interface\\Icons\\INV_Misc_QuestionMark"; };
+  table.insert(mod.items,1,item);
 
-	--add a random favorite pet on top
-	searchableText = token .. ": " .. L["PETS_RANDOM"] .. " (".. favoriteTag .. ")";
-    item = { text = searchableText , id=0, func = mod.summonPet, icon = "Interface\\Icons\\INV_Misc_QuestionMark"; };
+  --get the GUID for summoned pet
+  local summonedPetGUID = _G.C_PetJournal.GetSummonedPetGUID();
+
+  --if we have a pet sumoned create a search for dismiss
+  if not (summonedPetGUID  == nil) then
+
+    --create the text
+    searchableText = token .. ": " .. L["PETS_DISMISS"];
+
+    --set the text and function, we calling again to summon will dismm it
+    item = { text = searchableText , id=summonedPetGUID, func = mod.summonPet; };
     table.insert(mod.items,1,item);
 
-	--if we have a pet sumoned create a search for dismiss
-	if not (summonedPetGUID  == nil) then
-
-		--create the text
-		searchableText = token .. ": " .. L["PETS_DISMISS"];
-
-		--set the text and function, we calling again to summon will dismm it
-    	item = { text = searchableText , id=summonedPetGUID, func = mod.summonPet; };
-    	table.insert(mod.items,1,item);
-
-	end
+  end
 
 end
 
 --refresh the data
 function mod:Refresh()
 
-	debug("refreshing pet data");
+  debug("refreshing pet data");
 
-	--populate the data
-	mod:PopulatePets();
+  --populate the data
+  self:PopulatePets();
 
-	debug("data refreshed");
+  debug("data refreshed");
 
 end

@@ -87,17 +87,17 @@ mod.Vars = {
 function mod.EquippSet(item)
 
   --loop the sets
-  for i = 1, GetNumEquipmentSets() do
+  for i = 1, _G.GetNumEquipmentSets() do
 
     --get the set name and if is equipped
-    local name, _, _, equipped, _, _, _, _, _ = GetEquipmentSetInfo(i);
+    local name, _, _, equipped, _, _, _, _, _ = _G.GetEquipmentSetInfo(i);
 
     --if the set is named as what we are searching
     if item.id == name then
 
       --if not equipped, just equip it
       if not equipped then
-        UseEquipmentSet(name);
+        _G.UseEquipmentSet(name);
       end
 
       --all done
@@ -115,7 +115,7 @@ function mod.SpecSwitch(item)
   if mod.Profile.autoEquipSet then
 
     --create a new item with the name of the specialization
-    local name = select(2,GetSpecializationInfo(GetSpecialization(false, false, item.id)));
+    local name = select(2,_G.GetSpecializationInfo(_G.GetSpecialization(false, false, item.id)));
     local itemSet = { id = name } ;
 
     --equip the set
@@ -124,7 +124,7 @@ function mod.SpecSwitch(item)
   end
 
   --set the spec
-  SetActiveSpecGroup(item.id);
+  _G.SetActiveSpecGroup(item.id);
 
 end
 
@@ -135,16 +135,16 @@ function mod:PopulateSpecs()
   local tokenSpec = mod.Profile.tokenSpec;
   local activeTag = mod.Profile.activeTag;
   local inactiveTag = mod.Profile.inactiveTag;
-  local activeIndex = GetActiveSpecGroup();
-  local active=false;
-  local searchableText = "";
-  local index,item;
+  local activeIndex = _G.GetActiveSpecGroup();
+  local active;
+  local searchableText;
+  local item;
 
-  for index = 1, GetNumSpecGroups() do
+  for index = 1, _G.GetNumSpecGroups() do
 
-    if GetSpecialization(false, false, index) then
+    if _G.GetSpecialization(false, false, index) then
 
-      local specID, name, _, icon  = GetSpecializationInfo(GetSpecialization(false, false, index));
+      local _, name, _, icon  = _G.GetSpecializationInfo(_G.GetSpecialization(false, false, index));
 
       --its this the active spec?
       active = (index == activeIndex and true or false);
@@ -159,7 +159,7 @@ function mod:PopulateSpecs()
       item = { text = searchableText , id=index, func = mod.SpecSwitch, icon=icon };
 
       --insert the result
-      table.insert(mod.items,item);
+      table.insert(self.items,item);
 
     end
 
@@ -174,12 +174,12 @@ function mod:PopulateSets()
   local tokenSet = mod.Profile.tokenSet;
   local equippedTag = mod.Profile.equippedTag;
   local umequippedTag = mod.Profile.umequippedTag;
-  local index,item;
+  local item, searchableText;
 
-  for index = 1, GetNumEquipmentSets() do
+  for index = 1, _G.GetNumEquipmentSets() do
 
     --get the set name, icon and if is equipped
-    local name, icon, _, equipped, _, _, _, _, _ = GetEquipmentSetInfo(index);
+    local name, icon, _, equipped, _, _, _, _, _ = _G.GetEquipmentSetInfo(index);
 
     --base text
     searchableText = tokenSet .. ": ";
@@ -191,7 +191,7 @@ function mod:PopulateSets()
     item = { text = searchableText , id=name, func = mod.EquippSet, icon=icon };
 
     --insert the result
-    table.insert(mod.items,item);
+    table.insert(self.items,item);
 
   end
 
@@ -202,18 +202,18 @@ end
 --refresh the data
 function mod:Refresh()
 
-	debug("refreshing specs & gear data");
+  debug("refreshing specs & gear data");
 
   --return specializations
-  if mod.Profile.returnSpecs then
-    mod:PopulateSpecs();
+  if self.Profile.returnSpecs then
+    self:PopulateSpecs();
   end
 
   --return sets
-  if mod.Profile.returnSets then
-    mod:PopulateSets();
+  if self.Profile.returnSets then
+    self:PopulateSets();
   end
 
-	debug("data refreshed");
+  debug("data refreshed");
 
 end

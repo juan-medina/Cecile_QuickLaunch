@@ -66,29 +66,28 @@ mod.Vars = {
 function mod.openAchievement(item)
 
   --open achievement window
-  if not AchievementFrame or not AchievementFrame:IsShown() then
-    ToggleAchievementFrame();
+  if not _G.AchievementFrame or not _G.AchievementFrame:IsShown() then
+    _G.ToggleAchievementFrame();
   end
 
   --get archivement category and info
-  local category = GetAchievementCategory(item.id);
-  local _, parentID = GetCategoryInfo(category);
-  local i,entry;
+  local category = _G.GetAchievementCategory(item.id);
+  local _, parentID = _G.GetCategoryInfo(category);
 
   --select the archivement in the UI
-  AchievementFrame_SelectAchievement(item.id);
+  _G.AchievementFrame_SelectAchievement(item.id);
 
   -- expand category list to achievement's location
   if parentID == -1 then
-      for i, entry in next, ACHIEVEMENTUI_CATEGORIES do
-          if entry.id == category then
-              entry.collapsed = false;
-          elseif entry.parent == category then
-              entry.hidden = false;
-          end
+    for _, entry in next, _G.ACHIEVEMENTUI_CATEGORIES do
+      if entry.id == category then
+        entry.collapsed = false;
+      elseif entry.parent == category then
+        entry.hidden = false;
       end
-      --update the UI
-      AchievementFrameCategories_Update();
+    end
+    --update the UI
+    _G.AchievementFrameCategories_Update();
   end
 
 end
@@ -96,10 +95,10 @@ end
 --populate the list
 function mod:PopulateAchievements()
 
-  local categories = GetCategoryList();
+  local categories = _G.GetCategoryList();
 
-  local id, name, points, completed, month, day, year, description, flags, icon, rewardText, isGuildAch, wasEarnedByMe, earnedBy;
-  local category,number,categoryName,parentCategoryID,parentCategoryName;
+  local id, name,completed, icon;
+  local categoryName,parentCategoryID,parentCategoryName,searchableText,item;
 
   --options
   local token = mod.Profile.token;
@@ -113,18 +112,18 @@ function mod:PopulateAchievements()
   for _,category in pairs(categories) do
 
     --get the category name and the parent
-    categoryName, parentCategoryID, _ = GetCategoryInfo(category);
+    categoryName, parentCategoryID, _ = _G.GetCategoryInfo(category);
 
     --if we have parent get it
     if not (parentCategoryID == -1) then
-      parentCategoryName = select(1,GetCategoryInfo(parentCategoryID));
+      parentCategoryName = select(1,_G.GetCategoryInfo(parentCategoryID));
     end
 
     --go trough the archivements
-    for number=1,GetCategoryNumAchievements(category) do
+    for number=1,_G.GetCategoryNumAchievements(category) do
 
       --get info about the archivement
-      id, name, points, completed, month, day, year, description, flags, icon, rewardText, isGuildAch, wasEarnedByMe, earnedBy = GetAchievementInfo(category, number);
+      id, name, _, completed, _, _, _, _, _, icon, _, _, _, _ = _G.GetAchievementInfo(category, number);
 
       --if we have name
       if name then
@@ -151,7 +150,7 @@ function mod:PopulateAchievements()
           item = { text = searchableText , id=id, func = mod.openAchievement, icon=icon };
 
           --insert the result
-          table.insert(mod.items,item);
+          table.insert(self.items,item);
 
         end
 
@@ -169,7 +168,7 @@ function mod:Refresh()
   debug("refreshing achievements data");
 
   --populate the data
-  mod:PopulateAchievements();
+  self:PopulateAchievements();
 
   debug("data refreshed");
 
