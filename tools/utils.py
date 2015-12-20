@@ -1,8 +1,27 @@
+###############################################################
+## Library: utils.py
+## Description: Several common code
+## Author: jamedina@gmail.com
+##-------------------------------------------------------------
+## Required Modules: lxml
+###############################################################
+
 import os
 import logging
 import re
 import codecs
 from os import walk
+import requests
+from lxml import html
+from urlparse import urlparse
+import urllib
+import zipfile
+import shutil
+import stat
+import subprocess
+
+# Log object
+log = None
 
 class AddonInfo:
 
@@ -70,3 +89,94 @@ class AddonInfo:
         main_folders.append(folder)
 
     return folders,files,main_folders
+
+def del_rw(action, name, exc):
+    os.chmod(name, stat.S_IWRITE)
+    os.remove(name)
+
+def del_tree(path):
+  if os.path.exists(path):
+    shutil.rmtree(path, onerror=del_rw)
+
+def copy_tree(from_path, to_path):
+
+    overwrite = False
+
+    if os.path.exists(to_path):
+      del_tree(to_path)
+      overwrite = True
+
+    shutil.copytree(from_path, to_path)
+
+    return overwrite
+
+def get_svn(url,folder):
+
+  proc = subprocess.Popen(["svn","checkout", url,folder], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, universal_newlines=True)
+  out, err = proc.communicate()
+  exitcode = proc.returncode
+  if not (exitcode==0):
+    raise Exception("Fail to get SVN :" + err.replace("\n",""))
+  del_tree(folder+os.sep+".svn")
+
+def get_git(url,folder):
+
+  proc = subprocess.Popen(["git","clone", url,folder], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, universal_newlines=True)
+  out, err = proc.communicate()
+  exitcode = proc.returncode
+  if not (exitcode==0):
+    raise Exception("Fail to get Git :" + err.replace("\n",""))
+
+  del_tree(folder+os.sep+".git")
+
+def get_wowace(addon_url,folder):
+
+  url = addon_url + "/files/"
+
+  http_request = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
+  tree = html.fromstring(http_request.text)
+
+  file_page = tree.xpath('//td[@class="col-file"]/a')[0].attrib["href"]
+
+  parse = urlparse(url)
+
+  new_url = parse.scheme + "://" + parse.netloc + file_page
+
+  http_request = requests.get(new_url, headers={'User-Agent': 'Mozilla/5.0'})
+  tree = html.fromstring(http_request.text)
+
+  file_link = tree.xpath('//dd/a')[0].attrib["href"]
+
+  if not os.path.exists(folder):
+    os.makedirs(folder)
+
+  zip_file =folder+os.sep+"ace.zip"
+
+  urllib.urlretrieve (file_link, zip_file)
+
+  with zipfile.ZipFile(zip_file, "r") as z:
+    z.extractall(folder)
+
+  os.remove(zip_file)
+
+def unit_test():
+
+  log.info("Doing unit test")
+  get_wowace("http://www.wowace.com/addons/libdualspec-1-0", "test")
+
+if __name__ == '__main__':
+
+  LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
+
+  log = logging.getLogger(__name__)
+
+  try:
+
+    addon = AddonInfo()
+
+    unit_test()
+
+  except Exception as ex:
+    logging.error(ex, exc_info = True)
+    raise ex

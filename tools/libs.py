@@ -22,6 +22,11 @@ import shutil
 import stat
 
 from utils import AddonInfo
+from utils import del_tree
+from utils import copy_tree
+from utils import get_svn
+from utils import get_git
+from utils import get_wowace
 
 # Log object
 log = None
@@ -43,40 +48,11 @@ def LoadDeps(path):
 
   return deps
 
-def del_rw(action, name, exc):
-    os.chmod(name, stat.S_IWRITE)
-    os.remove(name)
-
-def del_tree(path):
-  if os.path.exists(path):
-    shutil.rmtree(path, onerror=del_rw)
-
-def GetSVN(url,folder):
-
-  proc = subprocess.Popen(["svn","checkout", url,folder], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, universal_newlines=True)
-  out, err = proc.communicate()
-  exitcode = proc.returncode
-  if not (exitcode==0):
-    raise Exception("Fail to get SVN :" + err.replace("\n",""))
-  del_tree(folder+os.sep+".svn")
-
-def GetGit(url,folder):
-
-  proc = subprocess.Popen(["git","clone", url,folder], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, universal_newlines=True)
-  out, err = proc.communicate()
-  exitcode = proc.returncode
-  if not (exitcode==0):
-    raise Exception("Fail to get Git :" + err.replace("\n",""))
-
-  del_tree(folder+os.sep+".git")
-
-def copy_and_overwrite(from_path, to_path):
-    if os.path.exists(to_path):
-      del_tree(to_path)
-      log.warning("Overwriting path : "+to_path)
-    else:
-      log.info("Copying : "+to_path)
-    shutil.copytree(from_path, to_path)
+def CopyFolder(origin,destination):
+  if copy_tree(origin, destination):
+    log.warning("Overwriting path : "+destination)
+  else:
+    log.info("Copying : "+destination)
 
 def CopyFolders(libs_folder,folders, destination):
 
@@ -84,7 +60,7 @@ def CopyFolders(libs_folder,folders, destination):
     original_folder = libs_folder + os.sep + folder
     final_folder = destination + os.sep + folder
 
-    copy_and_overwrite(original_folder, final_folder)
+    CopyFolder(original_folder, final_folder)
 
 def ProcessDeps(deps,libs_folder,install_folder):
 
@@ -99,12 +75,17 @@ def ProcessDeps(deps,libs_folder,install_folder):
       if this_dep["type"] == "svn":
 
         log.info("Getting %s from SVN : '%s'...", dep, url )
-        GetSVN(url,destination_folder)
+        get_svn(url,destination_folder)
 
       if this_dep["type"] == "git":
 
         log.info("Getting %s from Git : '%s'...", dep, url )
-        GetGit(url,destination_folder)
+        get_git(url,destination_folder)
+
+      if this_dep["type"] == "wowace":
+
+        log.info("Getting %s from wowace : '%s'...", dep, url )
+        get_wowace(url,destination_folder)
 
       to_folder = install_folder + os.sep + this_dep["destination"]
 
@@ -112,7 +93,7 @@ def ProcessDeps(deps,libs_folder,install_folder):
         CopyFolders(destination_folder,this_dep["folders"],to_folder)
       else:
         to_folder = install_folder + os.sep + this_dep["destination"]+os.sep+dep
-        copy_and_overwrite(destination_folder, to_folder)
+        CopyFolder(destination_folder, to_folder)
       del_tree(destination_folder)
 
 if __name__ == '__main__':

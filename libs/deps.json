@@ -41,9 +41,9 @@
     "disabled" : false
   },
   "LibDualSpec-1.0" : {
-    "type" : "git",
-    "url" : "git://git.wowace.com/wow/libdualspec-1-0/mainline.git",
-    "folders" : [],
+    "type" : "wowace",
+    "url" : "http://www.wowace.com/addons/libdualspec-1-0",
+    "folders" : ["LibDualSpec-1.0"],
     "destination" : "Libs",
     "disabled" : false
   },
