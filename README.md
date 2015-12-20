@@ -6,7 +6,7 @@ World of Warcraft quick launcher Addon
 
 https://www.youtube.com/watch?v=PLhgOrFDbzsb1nZbpycwJNBNQ_hCsch4vk&v=7mTBRzBMpo4
 
-**Usage:**
+#Usage:
 
 First you need to set-up a **keybinding** in the window settings to open the launcher, by default it's **CTRL+SHIFT+P**.
 
@@ -28,7 +28,7 @@ This AddOn include a **minimap icon** and some **slash commands**.
 
 **Open the launcher window:** /cql launch
 
-**Search Modules:**
+#Search Modules:
 
 **Achievements:**
 - Browse complete and uncompleted achievements and open achievements interface UI.
@@ -83,6 +83,6 @@ Teleport to dalaran:
 Use your Gammon's Braid toy:
 **CTRL+SHIFT+P** gammon **ENTER**]
 
-**Created By:**
+#Created By:
 
 **Cecile** **EU** - **Zul'jin**
