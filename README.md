@@ -57,7 +57,7 @@ This AddOn include a **minimap icon** and some **slash commands**.
 **Items:**
 - Use any object in your bags or equipped by your character.
 
-**Examples:**
+#Examples:
 
 Summon a random pet:
 **CTRL+SHIFT+P** pet **SPACE** rando **ENTER**
