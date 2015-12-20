@@ -16,6 +16,16 @@ local L=Engine.Locale;
 
 mod.desc = L["PROFESSIONS_MODULE"];
 
+mod.Vars = {
+  openToken =  {
+    type = "string",
+    default = L["PROFESSIONS_OPEN"],
+    order = 1,
+    label = L["PROFESSIONS_OPEN_TOKEN"],
+    desc = L["PROFESSIONS_OPEN_TOKEN_DESC"],
+  }
+}
+
 --populate
 function mod:PopulateProfessionSpells(profession)
 
@@ -23,14 +33,17 @@ function mod:PopulateProfessionSpells(profession)
     return;
   end
 
+  --options
+  local openToken = mod.Profile.openToken;
+
   --local vars
   local item , searchableText, remain, start, duration, enable;
 
-  local prefessionName, icon, rank, numEntries, offset, name;
+  local professionName, icon, rank, numEntries, offset, name;
 
   local spellID, _;
 
-  prefessionName, _, _, _, numEntries, offset, _, _, _, _ = _G.GetProfessionInfo(profession);
+  professionName, _, _, _, numEntries, offset, _, _, _, _ = _G.GetProfessionInfo(profession);
 
   for index = offset + 1, offset + numEntries do
 
@@ -41,13 +54,17 @@ function mod:PopulateProfessionSpells(profession)
       if(name) then
 
         --base text
-        searchableText = prefessionName .. ": ";
+        searchableText = professionName .. ": ";
 
         --complete the text
         if rank and not(rank=="") then
           searchableText = searchableText .. name.." ("..rank..")";
         else
           searchableText = searchableText .. name;
+        end
+
+        if name == professionName then
+          searchableText = searchableText .." ["..openToken.."]";
         end
 
         --get the cooldown
