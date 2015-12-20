@@ -344,7 +344,26 @@ function mod.twoStepsSelectModule(item)
 
 end
 
+function mod:Wipe()
+
+  debug("wiping data");
+
+  --goes trough all the modules
+  for _,module in pairs(self.modules) do
+    if module:IsEnabled() then
+      --clear items
+      _G.wipe(module.items);
+    end
+  end
+
+  debug("data wiped");
+
+end
+
 function mod:Refresh()
+
+  --wipe data
+  self:Wipe();
 
   debug("refreshing search data");
 
@@ -355,9 +374,6 @@ function mod:Refresh()
     local item, searchableText;
 
     if module:IsEnabled() then
-
-      --clear items
-      module.items = {};
 
       --if we are doing two steps searchs
       if mod.twoSteps then
