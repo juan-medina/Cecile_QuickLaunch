@@ -15,7 +15,7 @@ if not L then
 end
 
 --Spells module
-L["SPELLS"] = "Echizo"
-L["SPELLS_MODULE"] = "Echizos"
-L["SPELLS_TOKEN"] = "Etiqueta Echizos"
-L["SPELLS_TOKEN_DESC"] = "Cambia la etiqueta de Echizos"
+L["SPELLS"] = "Hechizo"
+L["SPELLS_MODULE"] = "Hechizos"
+L["SPELLS_TOKEN"] = "Etiqueta hechizos"
+L["SPELLS_TOKEN_DESC"] = "Cambia la etiqueta de hechizos"
