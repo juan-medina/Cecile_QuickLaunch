@@ -465,6 +465,13 @@ function mod.OnEscapePressed()
 
 end
 
+function mod.secureClick(button)
+  if type(button.item.func)=="function" then
+    button.item.func(button.item);
+  end
+  mod.secureHide();
+end
+
 function mod.secureHide()
   mod.secureButton:Hide();
   mod.secureButtonClose:Hide();
@@ -478,7 +485,9 @@ end
 function mod.secureOnEnter()
   _G.GameTooltip:SetOwner(mod.secureButton, "ANCHOR_RIGHT");
 
-  mod.secureButton.addTooptipFunc(_G.GameTooltip,mod.secureButton.item.id,false,true);
+  if not (mod.secureButton.addTooptipFunc == nil) then
+    mod.secureButton.addTooptipFunc(_G.GameTooltip,mod.secureButton.item.id,false,true);
+  end
 
 end
 
@@ -578,6 +587,18 @@ function mod:UseItem(item)
 
 end
 
+--use a function
+function mod:useFunc(item)
+
+  local help = L["WINDOW_HELP_ITEM"];
+
+  self.secureButton:SetAttribute("type","");
+
+  self:PrepareSecureButton(item,item.text,item.icon,help,0,0,true);
+
+end
+
+
 --default action on button click
 function mod.OnButtonClick(object)
 
@@ -589,7 +610,8 @@ function mod.OnButtonClick(object)
 
     --if we have a funcion call it
     if object.data.func then
-      object.data:func();
+      --object.data:func();
+      mod:useFunc(object.data);
     --if we have type
     elseif object.data.type then
       if object.data.type == "item" then
@@ -1194,7 +1216,7 @@ function mod:CreateUI()
   self.secureButton.cooldown:SetDrawEdge(false);
   self.secureButton.cooldown:SetSwipeColor(0, 0, 0, 1);
 
-  self.secureButton:HookScript("OnClick", self.secureHide);
+  self.secureButton:HookScript("OnClick", self.secureClick);
   self.secureButton:HookScript("OnEnter", self.secureOnEnter);
   self.secureButton:HookScript("OnLeave", self.secureOnLeave);
 
