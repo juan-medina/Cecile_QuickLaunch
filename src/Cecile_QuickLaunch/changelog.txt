@@ -1,6 +1,8 @@
 v1.2.0
 - Code Cleanup and fixing
 - Correct some spelling mistakes in the Spanish Translation
+- Splitting professions to a separate modules
+- For consistence all searches works with the icon + enter/escape system
 v1.1.3
 - Spell Module : Fix an error when the player has not all professions
 v1.1.2
