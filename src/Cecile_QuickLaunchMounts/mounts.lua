@@ -64,6 +64,15 @@ function mod.dismmissMount()
 
 end
 
+--set the mount tooltip
+function mod.setTooltip(tooltip,item)
+
+  local _,spellID = _G.C_MountJournal.GetMountInfo(item.id);
+
+  tooltip:SetMountBySpellID(spellID);
+
+end
+
 --create the list of mounts
 function mod:PopulateMounts()
 
@@ -111,7 +120,7 @@ function mod:PopulateMounts()
       if searchableText then
 
         --set our function and text
-        item = { text = searchableText , id=index, func = mod.summonMount, icon = icon};
+        item = { name = creatureName, text = searchableText , id=index, func = mod.summonMount, icon = icon, tooltipFunc = mod.setTooltip, help = L["MOUNT_HELP_ITEM"]};
 
         --add the item
         table.insert(self.items,item);
@@ -124,13 +133,13 @@ function mod:PopulateMounts()
 
   --add on top a search for random mount
   searchableText = token .. ": " .. L["MOUNT_RANDOM"] .. " (".. favoriteTag .. ")";
-  item = { text = searchableText , id=0, func = mod.summonMount, icon = "Interface\\Icons\\INV_Misc_QuestionMark"};
+  item = { name = searchableText, text = searchableText , id=0, func = mod.summonMount, icon = "Interface\\Icons\\INV_Misc_QuestionMark", help = L["MOUNT_HELP_ITEM"]};
   table.insert(mod.items,1,item);
 
   --if we are mounted add a search text for dismount on top
   if mounted then
     searchableText = token .. ": " .. L["MOUNT_DISMOUNT"];
-    item = { text = searchableText , id=0, func = mod.dismmissMount};
+    item = { name = searchableText, text = searchableText , id=0, func = mod.dismmissMount, help = L["MOUNT_HELP_ITEM_DISMOUNT"]};
     table.insert(mod.items,1,item);
   end
 
