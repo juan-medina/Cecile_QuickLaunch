@@ -502,7 +502,7 @@ end
 function mod:PrepareSecureButton(item,start,duration,enable)
 
   --local vars
-  local name, icon, help = item.name, item.icon or "Interface\\Icons\\Temp", item.help;
+  local name, icon, help = item.name, item.icon or "Interface\\Icons\\Temp", item.help or "";
 
   --if we are in combat display a message and return
   if self.combat then
@@ -514,6 +514,10 @@ function mod:PrepareSecureButton(item,start,duration,enable)
   end
 
   self.secureButton.icon:SetTexture(icon);
+
+  if type(item.help) == "function" then
+    help = item:help();
+  end
 
   self.secureButton.help.text:SetText(string.format(help,
     self.search.getColorString(self.fontColors.highlight).._G.KEY_ENTER.."|r",
@@ -572,20 +576,14 @@ end
 --use a item
 function mod:UseItem(item)
 
-  local name, _, _, _, _, _, _, _, _, icon, _ = _G.GetItemInfo(item.id);
   local start, duration, enable = _G.GetItemCooldown(item.id);
-  local help = L["WINDOW_HELP_ITEM"];
-
-  if _G.IsEquippableItem(name) and not _G.IsEquippedItem(name) then
-    help = L["WINDOW_HELP_ITEM_EQUIPP"];
-  end
 
   self.secureButton.tooltipFunc = item.tooltipFunc;
 
   self.secureButton:SetAttribute("type","item");
-  self.secureButton:SetAttribute("item",name);
+  self.secureButton:SetAttribute("item",item.name);
 
-  self:PrepareSecureButton(item,name,icon,help,start,duration,enable);
+  self:PrepareSecureButton(item,start,duration,enable);
 
 end
 

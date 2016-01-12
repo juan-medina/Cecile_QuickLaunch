@@ -74,6 +74,27 @@ mod.slots = {"HeadSlot",
   "SecondaryHandSlot"
 };
 
+--return the help for this item
+function mod.help(item)
+
+  local name = _G.GetItemInfo(item.id);
+  local help;
+
+  if _G.IsEquippableItem(name) and not _G.IsEquippedItem(name) then
+    help = L["ITEM_HELP_ITEM_EQUIPP"];
+  else
+    help = L["ITEM_HELP_ITEM"];
+  end
+
+  return help;
+
+end
+
+--set the item tooltip
+function mod.setTooltip(tooltip,item)
+  tooltip:SetItemByID(item.id);
+end
+
 function mod:PopulateEquippedItems()
 
   --options
@@ -103,7 +124,7 @@ function mod:PopulateEquippedItems()
       end
 
       --add the text and function
-      item = { text = searchableText , id=itemId, type = "item", icon = icon};
+      item = { name = name, text = searchableText , id=itemId, type = "item", icon = icon, help = mod.help, tooltipFunc = mod.setTooltip};
 
       --insert the result
       table.insert(self.items,item);
@@ -170,7 +191,7 @@ function mod:PopulateBagsItems()
     end
 
     --add the text and function
-    item = { text = searchableText , id=itemId, type = "item", icon = icon};
+    item = { name = savedName, text = searchableText , id=itemId, type = "item", icon = icon, help = mod.help, tooltipFunc = mod.setTooltip};
 
     --insert the result
     table.insert(self.items,item);

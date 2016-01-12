@@ -2,7 +2,7 @@
 ## Title: |cffffffffCecile|r_|cfffff569QuickLaunch|rItems
 ## Notes: Items module for |cffffffffCecile|r_|cfffff569QuickLaunch|r
 ## Author: Cecile
-## Version: 1.0.2.release
+## Version: 1.0.3.release
 ## OptionalDeps:
 ## Dependencies: Cecile_QuickLaunch
 

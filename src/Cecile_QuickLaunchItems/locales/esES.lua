@@ -29,4 +29,7 @@ L["ITEMS_RETURN_EQUIPPED"] = "Devolver Equipados"
 L["ITEMS_RETURN_EQUIPPED_DESC"] = "Activar/Desactivar devolver objetos equipados"
 L["ITEMS_RETURN_BAGS"] = "Devolver en Bolsas"
 L["ITEMS_RETURN_BAGS_DESC"] = "Activar/Desactivar devolver objetos en las bolsas"
+L["ITEM_HELP_ITEM"] = "Pulsa %s para usar,\n %s para cancelar."
+L["ITEM_HELP_ITEM_EQUIPP"] = "Pulsa %s para equipar,\n %s para cancelar."
+
 
