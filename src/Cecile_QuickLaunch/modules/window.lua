@@ -483,10 +483,10 @@ function mod.secureHide()
 end
 
 function mod.secureOnEnter()
-  _G.GameTooltip:SetOwner(mod.secureButton, "ANCHOR_RIGHT");
 
-  if not (mod.secureButton.addTooptipFunc == nil) then
-    mod.secureButton.addTooptipFunc(_G.GameTooltip,mod.secureButton.item.id,false,true);
+  if not (mod.secureButton.tooltipFunc == nil) then
+    _G.GameTooltip:SetOwner(mod.secureButton, "ANCHOR_RIGHT");
+    mod.secureButton.tooltipFunc(_G.GameTooltip,mod.secureButton.item);
   end
 
 end
@@ -496,7 +496,10 @@ function mod.secureOnLeave()
 end
 
 --prepare the secure button
-function mod:PrepareSecureButton(item,name,icon,help,start,duration,enable)
+function mod:PrepareSecureButton(item,start,duration,enable)
+
+  --local vars
+  local name, icon, help = item.name, item.icon, item.help;
 
   --if we are in combat display a message and return
   if self.combat then
@@ -546,7 +549,7 @@ function mod:UseSpell(item)
   local start, duration, enable = _G.GetSpellCooldown(name);
   local help = L["WINDOW_HELP_SPELL"];
 
-  self.secureButton.addTooptipFunc =_G.GameTooltip.SetSpellByID;
+  self.secureButton.tooltipFunc = item.tooltipFunc;
 
   self.secureButton:SetAttribute("type","spell");
   self.secureButton:SetAttribute("spell",item.id);
@@ -574,11 +577,7 @@ function mod:UseItem(item)
     help = L["WINDOW_HELP_ITEM_EQUIPP"];
   end
 
-  if _G.PlayerHasToy(item.id) then
-    self.secureButton.addTooptipFunc =_G.GameTooltip.SetToyByItemID;
-  else
-    self.secureButton.addTooptipFunc =_G.GameTooltip.SetItemByID;
-  end
+  self.secureButton.tooltipFunc = item.tooltipFunc;
 
   self.secureButton:SetAttribute("type","item");
   self.secureButton:SetAttribute("item",name);
@@ -590,11 +589,11 @@ end
 --use a function
 function mod:useFunc(item)
 
-  local help = L["WINDOW_HELP_ITEM"];
-
   self.secureButton:SetAttribute("type","");
 
-  self:PrepareSecureButton(item,item.text,item.icon,help,0,0,true);
+  self.secureButton.tooltipFunc = item.tooltipFunc;
+
+  self:PrepareSecureButton(item,0,0,true);
 
 end
 

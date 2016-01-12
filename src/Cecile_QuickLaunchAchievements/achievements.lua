@@ -92,12 +92,17 @@ function mod.openAchievement(item)
 
 end
 
+--set the archivement tooltip
+function mod.setTooltip(tooltip,item)
+  tooltip:SetAchievementByID(item.id);
+end
+
 --populate the list
 function mod:PopulateAchievements()
 
   local categories = _G.GetCategoryList();
 
-  local id, name,completed, icon;
+  local id, name,completed, icon, shortName;
   local categoryName,parentCategoryID,parentCategoryName,searchableText,item;
 
   --options
@@ -143,11 +148,14 @@ function mod:PopulateAchievements()
         --complete the text
         searchableText = searchableText .. name .. " (" .. (completed and completedTag or uncompletedTag) .. ")";
 
+        --create the short text
+        shortName = name;
+
         --if we need to add it
         if ( completed and showCompleted) or (not(completed) and showUncompleted) then
 
           --add the text and function
-          item = { text = searchableText , id=id, func = mod.openAchievement, icon=icon };
+          item = { name = shortName, text = searchableText , id=id, func = mod.openAchievement, tooltipFunc = mod.setTooltip, icon = icon, help = L["ACHIEVEMENTS_HELP_ITEM"] };
 
           --insert the result
           table.insert(self.items,item);
