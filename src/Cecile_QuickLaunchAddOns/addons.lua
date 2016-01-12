@@ -164,7 +164,7 @@ function mod:PopulateAddonsConfig()
     --if its root or we want to return subsets
     if (frame.parent==nil) or (subsets) then
       --setup item
-      item = { text = searchableText , id=frame, func = mod.openBlizConfig};
+      item = { name = name, text = searchableText, id=frame, func = mod.openBlizConfig, help = L["ADDONS_HELP_ITEM"]};
 
       --add the item
       table.insert(self.items,item);

@@ -484,9 +484,12 @@ end
 
 function mod.secureOnEnter()
 
+  _G.GameTooltip:SetOwner(mod.secureButton, "ANCHOR_RIGHT");
   if not (mod.secureButton.tooltipFunc == nil) then
-    _G.GameTooltip:SetOwner(mod.secureButton, "ANCHOR_RIGHT");
     mod.secureButton.tooltipFunc(_G.GameTooltip,mod.secureButton.item);
+  else
+    _G.GameTooltip:AddLine(mod.secureButton.item.name);
+    _G.GameTooltip:Show();
   end
 
 end
@@ -499,7 +502,7 @@ end
 function mod:PrepareSecureButton(item,start,duration,enable)
 
   --local vars
-  local name, icon, help = item.name, item.icon, item.help;
+  local name, icon, help = item.name, item.icon or "Interface\\Icons\\Temp", item.help;
 
   --if we are in combat display a message and return
   if self.combat then
