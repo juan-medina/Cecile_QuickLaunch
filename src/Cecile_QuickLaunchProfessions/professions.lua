@@ -26,6 +26,13 @@ mod.Vars = {
   }
 }
 
+--set the mount tooltip
+function mod.setTooltip(tooltip,item)
+
+  tooltip:SetSpellByID(item.id);
+
+end
+
 --populate
 function mod:PopulateProfessionSpells(profession)
 
@@ -77,7 +84,7 @@ function mod:PopulateProfessionSpells(profession)
         end
 
         --add the text and function
-        item = { text = searchableText , id=spellID, type = "spell", icon=icon};
+        item = { name = name, text = searchableText , id=spellID, type = "spell", icon=icon, tooltipFunc = mod.setTooltip, help=L["PROFESSIONS_HELP_ITEM"]};
 
         --insert the result
         table.insert(self.items,item);

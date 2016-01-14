@@ -19,5 +19,4 @@ L["PROFESSIONS_MODULE"] = "Profesionses"
 L["PROFESSIONS_OPEN"] = "Abrir"
 L["PROFESSIONS_OPEN_TOKEN"] = "Etiqueta Abrir"
 L["PROFESSIONS_OPEN_TOKEN_DESC"] = "Cambia la etiqueta par abrir la profesión"
-
-
+L["PROFESSIONS_HELP_ITEM"] = "Pulsa %s para lanzar,\n %s para cancelar."

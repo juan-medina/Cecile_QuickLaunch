@@ -553,24 +553,15 @@ end
 --use a spell
 function mod:UseSpell(item)
 
-  local name, rank, icon, _, _, _, spellID = _G.GetSpellInfo(item.id);
+  local name = _G.GetSpellInfo(item.id);
   local start, duration, enable = _G.GetSpellCooldown(name);
-  local help = L["WINDOW_HELP_SPELL"];
 
   self.secureButton.tooltipFunc = item.tooltipFunc;
 
   self.secureButton:SetAttribute("type","spell");
   self.secureButton:SetAttribute("spell",item.id);
 
-  if rank and not(rank=="") then
-    name = name.." ("..rank..")";
-  end
-
-  local petIndex, petName = _G.GetCallPetSpellInfo(spellID);
-  if petIndex and petIndex and not(petName=="") then
-    name = name.." ("..petName..")";
-  end
-  self:PrepareSecureButton(item,name,icon,help,start,duration,enable);
+  self:PrepareSecureButton(item,start,duration,enable);
 
 end
 
