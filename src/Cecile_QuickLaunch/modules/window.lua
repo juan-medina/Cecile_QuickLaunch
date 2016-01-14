@@ -488,7 +488,7 @@ function mod.secureOnEnter()
   if not (mod.secureButton.tooltipFunc == nil) then
     mod.secureButton.tooltipFunc(_G.GameTooltip,mod.secureButton.item);
   else
-    _G.GameTooltip:AddLine(mod.secureButton.item.name);
+    _G.GameTooltip:AddLine(mod.secureButton.item.name or mod.secureButton.item.text);
     _G.GameTooltip:Show();
   end
 
@@ -496,13 +496,14 @@ end
 
 function mod.secureOnLeave()
   _G.GameTooltip:Hide();
+  _G.BattlePetTooltip:Hide();
 end
 
 --prepare the secure button
 function mod:PrepareSecureButton(item,start,duration,enable)
 
   --local vars
-  local name, icon, help = item.name, item.icon or "Interface\\Icons\\Temp", item.help or "";
+  local name, icon, help = item.name or item.text, item.icon or "Interface\\Icons\\Temp", item.help or "";
 
   --if we are in combat display a message and return
   if self.combat then

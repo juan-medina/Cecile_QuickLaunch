@@ -48,6 +48,18 @@ mod.Vars = {
   },
 };
 
+
+--set the pet tooltip
+function mod.setTooltip(_,item)
+
+  local link = _G.C_PetJournal.GetBattlePetLink(item.id);
+  local speciesID, customName, level = _G.C_PetJournal.GetPetInfoByPetID(item.id);
+  local _, _, _, breedQuality, maxHealth, power, speed, _ = _G.strsplit(":", link);
+  _G.BattlePetToolTip_Show(speciesID, level, tonumber(breedQuality), maxHealth, power, speed, customName);
+  _G.BattlePetTooltip.Name:SetText(item.name);
+
+end
+
 --summon a pet if id==0 its random
 function mod.summonPet(item)
 
@@ -103,7 +115,7 @@ function mod:PopulatePets()
       if searchableText then
 
         --add the text and function
-        item = { text = searchableText , id=petID, func = mod.summonPet, icon = icon ;};
+        item = { name = creatureName, text = searchableText , id=petID, func = mod.summonPet, icon = icon, tooltipFunc = mod.setTooltip , help = L["PETS_HELP_ITEM"] };
 
         --insert the result
         table.insert(self.items,item);
@@ -116,7 +128,7 @@ function mod:PopulatePets()
 
   --add a random favorite pet on top
   searchableText = token .. ": " .. L["PETS_RANDOM"] .. " (".. favoriteTag .. ")";
-  item = { text = searchableText , id=0, func = mod.summonPet, icon = "Interface\\Icons\\INV_Misc_QuestionMark"; };
+  item = { text = searchableText , id=0, func = mod.summonPet, icon = "Interface\\Icons\\INV_Misc_QuestionMark", help = L["PETS_HELP_ITEM"] };
   table.insert(mod.items,1,item);
 
   --get the GUID for summoned pet
@@ -129,7 +141,7 @@ function mod:PopulatePets()
     searchableText = token .. ": " .. L["PETS_DISMISS"];
 
     --set the text and function, we calling again to summon will dismm it
-    item = { text = searchableText , id=summonedPetGUID, func = mod.summonPet; };
+    item = { text = searchableText , id=summonedPetGUID, func = mod.summonPet, help = L["PETS_HELP_ITEM_DISMISS"] };
     table.insert(mod.items,1,item);
 
   end
