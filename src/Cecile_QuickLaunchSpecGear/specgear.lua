@@ -83,6 +83,25 @@ mod.Vars = {
   },
 };
 
+--set the set tooltip
+function mod.setTooltip(tooltip,item)
+
+  tooltip:SetEquipmentSet(item.id);
+
+end
+
+--set the sepc tooltip
+function mod.specTooltip(tooltip,item)
+
+  local description = select(3,_G.GetSpecializationInfo(_G.GetSpecialization(false, false, item.id)));
+
+  tooltip:AddLine(item.name, _G.HIGHLIGHT_FONT_COLOR.r, _G.HIGHLIGHT_FONT_COLOR.g, _G.HIGHLIGHT_FONT_COLOR.b);
+  tooltip:AddLine(description);
+  tooltip:Show();
+
+end
+
+
 --equip a set
 function mod.EquippSet(item)
 
@@ -139,6 +158,7 @@ function mod:PopulateSpecs()
   local active;
   local searchableText;
   local item;
+  local shortName;
 
   for index = 1, _G.GetNumSpecGroups() do
 
@@ -155,8 +175,10 @@ function mod:PopulateSpecs()
       --complete the text
       searchableText = searchableText .. name .. " (" .. (active and activeTag or inactiveTag) .. ")";
 
+      shortName = tokenSpec .. ": " .. name;
+
       --add the text and function
-      item = { text = searchableText , id=index, func = mod.SpecSwitch, icon=icon };
+      item = { name = shortName, text = searchableText , id=index, func = mod.SpecSwitch, icon=icon, help = L["SPECGEAR_HELP_SPEC"], tooltipFunc = mod.specTooltip };
 
       --insert the result
       table.insert(self.items,item);
@@ -175,6 +197,7 @@ function mod:PopulateSets()
   local equippedTag = mod.Profile.equippedTag;
   local umequippedTag = mod.Profile.umequippedTag;
   local item, searchableText;
+  local shortName;
 
   for index = 1, _G.GetNumEquipmentSets() do
 
@@ -187,8 +210,10 @@ function mod:PopulateSets()
     --complete the text
     searchableText = searchableText .. name .. " (" .. (equipped and equippedTag or umequippedTag) .. ")";
 
+    shortName = tokenSet .. ": " .. name;
+
     --add the text and function
-    item = { text = searchableText , id=name, func = mod.EquippSet, icon=icon };
+    item = { name = shortName , text = searchableText , id=name, func = mod.EquippSet, icon=icon, help = L["SPECGEAR_HELP_SET"], tooltipFunc = mod.setTooltip };
 
     --insert the result
     table.insert(self.items,item);
