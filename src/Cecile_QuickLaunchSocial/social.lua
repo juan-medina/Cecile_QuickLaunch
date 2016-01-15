@@ -105,7 +105,7 @@ function mod:PopulateFriends()
         searchableText = whispersToken .. ": " .. charText;
 
         --add the text and function
-        item = { text = searchableText , id=name, func = mod.whisper };
+        item = { text = searchableText , id=name, func = mod.whisper, help=L["SOCIAL_HELP_WHISPER"]  };
 
         --insert the result
         table.insert(mod.items,item);
@@ -115,7 +115,7 @@ function mod:PopulateFriends()
         searchableText = inviteToken .. ": " .. charText;
 
         --add the text and function
-        item = { text = searchableText , id=name, func = mod.invite };
+        item = { text = searchableText , id=name, func = mod.invite, help=L["SOCIAL_HELP_INVITE"]  };
 
         --insert the result
         table.insert(self.items,item);
@@ -176,7 +176,7 @@ function mod:PopulateBNetFriends()
           searchableText = whispersToken .. ": " .. charText;
 
           --add the text and function
-          item = { text = searchableText , id=presenceName, func = mod.whisper, icon=icon };
+          item = { text = searchableText , id=presenceName, func = mod.whisper, icon=icon, help=L["SOCIAL_HELP_WHISPER"] };
 
           --insert the result
           table.insert(mod.items,item);
@@ -186,7 +186,7 @@ function mod:PopulateBNetFriends()
           searchableText = inviteToken .. ": " .. charText;
 
           --add the text and function
-          item = { text = searchableText , id=toonID, func = mod.invite, icon=icon };
+          item = { text = searchableText , id=toonID, func = mod.invite, icon=icon, help=L["SOCIAL_HELP_INVITE"] };
 
           --insert the result
           table.insert(mod.items,item);
@@ -200,7 +200,7 @@ function mod:PopulateBNetFriends()
           searchableText = whispersToken .. ": " .. charText;
 
           --add the text and function
-          item = { text = searchableText , id=presenceName, func = mod.whisper, icon=icon };
+          item = { text = searchableText , id=presenceName, func = mod.whisper, icon=icon, help=L["SOCIAL_HELP_WHISPER"] };
 
           --insert the result
           table.insert(self.items,item);
@@ -230,7 +230,7 @@ function mod:PopulateConvert()
       searchableText = convertToken .. ": " .. L["SOCIAL_CONVERT_TO_PARTY"];
 
       --add the text and function
-      item = { text = searchableText , func = _G.ConvertToParty };
+      item = { text = searchableText , func = _G.ConvertToParty, help=L["SOCIAL_HELP_CONVERT"] };
 
       --insert the result
       table.insert(self.items,item);
@@ -241,7 +241,7 @@ function mod:PopulateConvert()
       searchableText = convertToken .. ": " .. L["SOCIAL_CONVERT_TO_RAID"];
 
       --add the text and function
-      item = { text = searchableText , func = _G.ConvertToRaid };
+      item = { text = searchableText , func = _G.ConvertToRaid, help=L["SOCIAL_HELP_CONVERT"] };
 
       --insert the result
       table.insert(self.items,item);
@@ -257,7 +257,7 @@ function mod:Refresh()
 
   debug("refreshing social data");
 
-  --return specializations
+  --return social
   if self.Profile.returnWhispers or self.Profile.returnInvite then
     self:PopulateFriends();
     self:PopulateBNetFriends();

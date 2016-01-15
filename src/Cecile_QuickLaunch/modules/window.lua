@@ -653,6 +653,12 @@ function mod.flattern(object)
   if object.SetPushedTexture then object:SetPushedTexture("") end
   if object.SetDisabledTexture then object:SetDisabledTexture("") end
 
+  if object.icon then
+    local fit = 0.075;
+    object.icon:SetAllPoints();
+    object.icon:SetTexCoord(fit, 1-fit, fit, 1-fit);
+  end
+
 end
 
 
