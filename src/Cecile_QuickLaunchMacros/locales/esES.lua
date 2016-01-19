@@ -1,5 +1,5 @@
 ----------------------------------------------------------------------------------------------------
--- localized Spanish (({{name}} module) strings
+-- localized Spanish ((Macros module) strings
 --
 
 --get the add-on engine
@@ -14,11 +14,11 @@ if not L then
   end
 end
 
---{{name}} module
-L["{{upper name}}"] = "{{name}}"
-L["{{upper name}}_NAME"] = "{{name}}"
-L["{{upper name}}_MODULE"] = "{{name}}"
-L["{{upper name}}_TOKEN"] = "{{name}} Token"
-L["{{upper name}}_TOKEN_DESC"] = "Change the {{name}} Token"
-L["{{upper name}}_HELP_ITEM"] = "Pulsa %s para usar,\n %s para cancelar."
+--Macros module
+L["MACROS"] = "Macros"
+L["MACROS_NAME"] = "Macro"
+L["MACROS_MODULE"] = "Macros"
+L["MACROS_TOKEN"] = "Macros Token"
+L["MACROS_TOKEN_DESC"] = "Change the Macros Token"
+L["MACROS_HELP_ITEM"] = "Pulsa %s para usar,\n %s para cancelar."
 

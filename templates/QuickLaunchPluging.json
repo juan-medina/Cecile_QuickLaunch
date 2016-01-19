@@ -3,6 +3,6 @@
   "templates_path" : ".",
   "template_name" : "QuickLaunchPluging",
   "variables" :  {
-    "name" : "Module"
+    "name" : "Macros"
   }
 }

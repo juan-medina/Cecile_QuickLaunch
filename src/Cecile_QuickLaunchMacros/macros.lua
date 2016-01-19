@@ -1,12 +1,12 @@
 ----------------------------------------------------------------------------------------------------
--- search {{name}} module
+-- search Macros module
 
 --get the engine and create the module
 local Engine = _G.Cecile_QuickLaunch;
 
 --create the modules as submodule of search
 local search = Engine.AddOn:GetModule("search");
-local mod = search:NewModule("{{lower name}}");
+local mod = search:NewModule("macros");
 
 --debug
 local debug = Engine.AddOn:GetModule("debug");
@@ -14,16 +14,16 @@ local debug = Engine.AddOn:GetModule("debug");
 --get the locale
 local L=Engine.Locale;
 
-mod.desc = L["{{upper name}}_MODULE"];
+mod.desc = L["MACROS_MODULE"];
 
 --module vars
 mod.Vars = {
   token =  {
     type = "string",
-    default = L["{{upper name}}_NAME"],
+    default = L["MACROS_NAME"],
     order = 1,
-    label = L["{{upper name}}_TOKEN"],
-    desc = L["{{upper name}}_TOKEN_DESC"],
+    label = L["MACROS_TOKEN"],
+    desc = L["MACROS_TOKEN_DESC"],
   },
 };
 
@@ -35,7 +35,7 @@ function mod.dummy(item)
 end
 
 --populate
-function mod:Populate{{name}}()
+function mod:PopulateMacros()
 
   --options
   local token = mod.Profile.token;
@@ -50,7 +50,7 @@ function mod:Populate{{name}}()
     searchableText = searchableText .. index;
 
     --add the text and function
-    item = { text = searchableText , id=index, func = mod.dummy, help = L["{{upper name}}_HELP_ITEM"]};
+    item = { text = searchableText , id=index, func = mod.dummy, help = L["MACROS_HELP_ITEM"]};
 
     --insert the result
     table.insert(self.items,item);
@@ -62,10 +62,10 @@ end
 --refresh the data
 function mod:Refresh()
 
-  debug("refreshing {{name}} data");
+  debug("refreshing Macros data");
 
   --populate data
-  self:Populate{{name}}();
+  self:PopulateMacros();
 
   debug("data refreshed");
 
