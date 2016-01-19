@@ -48,6 +48,11 @@ mod.Vars = {
   },
 };
 
+--set the toy tooltip
+function mod.setTooltip(tooltip,item)
+  tooltip:SetToyByItemID(item.id);
+end
+
 --populate
 function mod:Populate()
 
@@ -96,7 +101,7 @@ function mod:Populate()
           end
 
           --add the text and function
-          item = { text = searchableText , id=toyID, type = "item", icon = icon};
+          item = { name = name , text = searchableText , id=toyID, type = "item", icon = icon, tooltipFunc = mod.setTooltip , help = L["TOYS_HELP_ITEM"] };
 
           --insert the result
           table.insert(self.items,item);

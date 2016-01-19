@@ -124,7 +124,7 @@ function mod:PopulateEquippedItems()
       end
 
       --add the text and function
-      item = { name = name, text = searchableText , id=itemId, type = "item", icon = icon, help = mod.help, tooltipFunc = mod.setTooltip};
+      item = { name = name, text = searchableText , id=itemId, type = "item", icon = icon, help = mod.help, tooltipFunc = mod.setTooltip };
 
       --insert the result
       table.insert(self.items,item);
