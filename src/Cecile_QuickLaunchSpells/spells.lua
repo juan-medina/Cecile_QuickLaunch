@@ -27,6 +27,13 @@ mod.Vars = {
   },
 };
 
+--set the mount tooltip
+function mod.setTooltip(tooltip,item)
+
+  tooltip:SetSpellByID(item.id);
+
+end
+
 --populate flyouts spells
 function mod:PopulateFlyouts()
 
@@ -38,7 +45,7 @@ function mod:PopulateFlyouts()
   local isKnown, spellName;
   local name, rank, icon, spellID;
   local petIndex, petName;
-  local searchableText, remain, start, duration;
+  local searchableText, remain, start, duration, shortText;
   local _;
 
   numFlyouts = _G.GetNumFlyouts();
@@ -60,12 +67,11 @@ function mod:PopulateFlyouts()
 
           if(name) then
 
+            searchableText = "";
+
             petIndex, petName = _G.GetCallPetSpellInfo(spellID);
 
             if not (petIndex and (not petName or petName == "")) then
-
-              --base text
-              searchableText = token .. ": ";
 
               --complete the text
               if petName then
@@ -78,6 +84,9 @@ function mod:PopulateFlyouts()
                 end
               end
 
+              --get short text
+              shortText = searchableText;
+
               --get the cooldown
               start, duration = _G.GetSpellCooldown(spellID);
 
@@ -86,8 +95,11 @@ function mod:PopulateFlyouts()
                 searchableText = searchableText .. " ["..search.SecondsToClock(remain).."]";
               end
 
+              --base text
+              searchableText = token .. ": " .. searchableText;
+
               --add the text and function
-              item = { text = searchableText , id=spellID, type = "spell", icon=icon};
+              item = { name = shortText, text = searchableText , id=spellID, type = "spell", icon=icon, tooltipFunc = mod.setTooltip, help = L["SPELLS_HELP_ITEM"] };
 
               --insert the result
               table.insert(self.items,item);
@@ -114,7 +126,7 @@ function mod:PopulateNormalSpells()
 
   --local vars
   local name, rank, icon, spellID, offset, numEntries, offspecID;
-  local searchableText, remain, start, duration, enable, item;
+  local searchableText, remain, start, duration, enable, item, shortText;
 
   --get all spell tabs
   local numTabs = _G.GetNumSpellTabs();
@@ -134,8 +146,7 @@ function mod:PopulateNormalSpells()
 
           if(name) then
 
-            --base text
-            searchableText = token .. ": ";
+            searchableText = "";
 
             --complete the text
             if rank and not(rank=="") then
@@ -143,6 +154,8 @@ function mod:PopulateNormalSpells()
             else
               searchableText = searchableText .. name;
             end
+
+            shortText = searchableText;
 
             --get the cooldown
             start, duration, enable = _G.GetSpellCooldown(index, _G.BOOKTYPE_SPELL);
@@ -153,8 +166,11 @@ function mod:PopulateNormalSpells()
               searchableText = searchableText .. " ["..search.SecondsToClock(remain).."]";
             end
 
+            --base text
+            searchableText = token .. ": " .. searchableText;
+
             --add the text and function
-            item = { text = searchableText , id=spellID, type = "spell", icon=icon};
+            item = { name = shortText, text = searchableText , id=spellID, type = "spell", icon=icon, tooltipFunc = mod.setTooltip, help = L["SPELLS_HELP_ITEM"] };
 
             --insert the result
             table.insert(self.items,item);
