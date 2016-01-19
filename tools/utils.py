@@ -1,9 +1,9 @@
 ###############################################################
-## Library: utils.py
-## Description: Several common code
-## Author: jamedina@gmail.com
-##-------------------------------------------------------------
-## Required Modules: lxml
+# Library: utils.py
+# Description: Several common code
+# Author: jamedina@gmail.com
+# -------------------------------------------------------------
+# Required Modules: lxml
 ###############################################################
 
 import os
@@ -23,160 +23,170 @@ import subprocess
 # Log object
 log = None
 
+
 class AddonInfo:
 
-  def __init__(self):
+    def __init__(self):
 
-    self.log = logging.getLogger(self.__class__.__name__)
+        self.log = logging.getLogger(self.__class__.__name__)
 
-    self.name = self.GetAddonName()
+        self.name = self.GetAddonName()
 
-    self.src_folder = os.path.abspath(os.path.join(os.pardir, "src"))
+        self.src_folder = os.path.abspath(os.path.join(os.pardir, "src"))
 
-    self.main_addon = self.src_folder + os.sep + self.name
+        self.main_addon = self.src_folder + os.sep + self.name
 
-    self.toc = self.main_addon + os.sep + self.name + ".toc"
+        self.toc = self.main_addon + os.sep + self.name + ".toc"
 
-    self.version = self.GetAddonVersion()
+        self.version = self.GetAddonVersion()
 
-    self.folders, self.files, self.main_folders = self.GetSources()
+        self.folders, self.files, self.main_folders = self.GetSources()
 
-  def GetAddonName(self):
-    addon_folder = os.path.abspath(os.pardir)
+    def GetAddonName(self):
+        addon_folder = os.path.abspath(os.pardir)
 
-    parent_folder = os.path.abspath(os.path.join(addon_folder, os.pardir))
+        parent_folder = os.path.abspath(os.path.join(addon_folder, os.pardir))
 
-    addon_name = addon_folder.replace(parent_folder+os.sep,"")
+        addon_name = addon_folder.replace(parent_folder + os.sep, "")
 
-    self.log .info("Addon is : '%s'", addon_name)
+        self.log .info("Addon is : '%s'", addon_name)
 
-    return addon_name
+        return addon_name
 
-  def GetAddonVersion(self):
+    def GetAddonVersion(self):
 
-    version = None
-    reg_exp = re.compile(ur'## Version..(.*)')
+        version = None
+        reg_exp = re.compile(ur'## Version..(.*)')
 
-    with codecs.open(self.toc, encoding='utf-8') as input_file:
-      for line in input_file.readlines():
-        match = re.search(reg_exp, line)
-        if not(match is None):
-          version = match.group(1)
-          version = version.replace("\r","")
-          break
+        with codecs.open(self.toc, encoding='utf-8') as input_file:
+            for line in input_file.readlines():
+                match = re.search(reg_exp, line)
+                if not(match is None):
+                    version = match.group(1)
+                    version = version.replace("\r", "")
+                    break
 
-    self.log .info("Addon version is : '%s'", version)
+        self.log .info("Addon version is : '%s'", version)
 
-    return version
+        return version
 
-  def GetSources(self):
+    def GetSources(self):
 
-    self.log.info("reading src folder [%s]", self.src_folder)
+        self.log.info("reading src folder [%s]", self.src_folder)
 
-    folders = []
-    files = []
-    main_folders = []
+        folders = []
+        files = []
+        main_folders = []
 
-    for (dirpath, dirnames, filenames) in walk(self.src_folder):
-        folders.append(dirpath)
-        for filename in filenames:
-          if not (dirpath == self.src_folder):
-            files.append(dirpath + os.sep + filename)
+        for (dirpath, dirnames, filenames) in walk(self.src_folder):
+            folders.append(dirpath)
+            for filename in filenames:
+                if not (dirpath == self.src_folder):
+                    files.append(dirpath + os.sep + filename)
 
-    for folder in folders:
-      folder_partial = folder.replace(self.src_folder+os.sep,"")
-      if(re.search(ur"\\",folder_partial) is None):
-        main_folders.append(folder)
+        for folder in folders:
+            folder_partial = folder.replace(self.src_folder + os.sep, "")
+            if(re.search(ur"\\", folder_partial) is None):
+                main_folders.append(folder)
 
-    return folders,files,main_folders
+        return folders, files, main_folders
+
 
 def del_rw(action, name, exc):
     os.chmod(name, stat.S_IWRITE)
     os.remove(name)
 
+
 def del_tree(path):
-  if os.path.exists(path):
-    shutil.rmtree(path, onerror=del_rw)
+    if os.path.exists(path):
+        shutil.rmtree(path, onerror=del_rw)
+
 
 def copy_tree(from_path, to_path):
 
     overwrite = False
 
     if os.path.exists(to_path):
-      del_tree(to_path)
-      overwrite = True
+        del_tree(to_path)
+        overwrite = True
 
     shutil.copytree(from_path, to_path)
 
     return overwrite
 
-def get_svn(url,folder):
 
-  proc = subprocess.Popen(["svn","checkout", url,folder], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, universal_newlines=True)
-  out, err = proc.communicate()
-  exitcode = proc.returncode
-  if not (exitcode==0):
-    raise Exception("Fail to get SVN :" + err.replace("\n",""))
-  del_tree(folder+os.sep+".svn")
+def get_svn(url, folder):
 
-def get_git(url,folder):
+    proc = subprocess.Popen(["svn", "checkout", url, folder], stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE, shell=True, universal_newlines=True)
+    out, err = proc.communicate()
+    exitcode = proc.returncode
+    if not (exitcode == 0):
+        raise Exception("Fail to get SVN :" + err.replace("\n", ""))
+    del_tree(folder + os.sep + ".svn")
 
-  proc = subprocess.Popen(["git","clone", url,folder], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, universal_newlines=True)
-  out, err = proc.communicate()
-  exitcode = proc.returncode
-  if not (exitcode==0):
-    raise Exception("Fail to get Git :" + err.replace("\n",""))
 
-  del_tree(folder+os.sep+".git")
+def get_git(url, folder):
 
-def get_wowace(addon_url,folder):
+    proc = subprocess.Popen(["git", "clone", url, folder], stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE, shell=True, universal_newlines=True)
+    out, err = proc.communicate()
+    exitcode = proc.returncode
+    if not (exitcode == 0):
+        raise Exception("Fail to get Git :" + err.replace("\n", ""))
 
-  url = addon_url + "/files/"
+    del_tree(folder + os.sep + ".git")
 
-  http_request = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
-  tree = html.fromstring(http_request.text)
 
-  file_page = tree.xpath('//td[@class="col-file"]/a')[0].attrib["href"]
+def get_wowace(addon_url, folder):
 
-  parse = urlparse(url)
+    url = addon_url + "/files/"
 
-  new_url = parse.scheme + "://" + parse.netloc + file_page
+    http_request = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
+    tree = html.fromstring(http_request.text)
 
-  http_request = requests.get(new_url, headers={'User-Agent': 'Mozilla/5.0'})
-  tree = html.fromstring(http_request.text)
+    file_page = tree.xpath('//td[@class="col-file"]/a')[0].attrib["href"]
 
-  file_link = tree.xpath('//dd/a')[0].attrib["href"]
+    parse = urlparse(url)
 
-  if not os.path.exists(folder):
-    os.makedirs(folder)
+    new_url = parse.scheme + "://" + parse.netloc + file_page
 
-  zip_file =folder+os.sep+"ace.zip"
+    http_request = requests.get(new_url, headers={'User-Agent': 'Mozilla/5.0'})
+    tree = html.fromstring(http_request.text)
 
-  urllib.urlretrieve (file_link, zip_file)
+    file_link = tree.xpath('//dd/a')[0].attrib["href"]
 
-  with zipfile.ZipFile(zip_file, "r") as z:
-    z.extractall(folder)
+    if not os.path.exists(folder):
+        os.makedirs(folder)
 
-  os.remove(zip_file)
+    zip_file = folder + os.sep + "ace.zip"
+
+    urllib.urlretrieve(file_link, zip_file)
+
+    with zipfile.ZipFile(zip_file, "r") as z:
+        z.extractall(folder)
+
+    os.remove(zip_file)
+
 
 def unit_test():
 
-  log.info("Doing unit test")
-  get_wowace("http://www.wowace.com/addons/libdualspec-1-0", "test")
+    log.info("Doing unit test")
+    get_wowace("http://www.wowace.com/addons/libdualspec-1-0", "test")
 
 if __name__ == '__main__':
 
-  LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-  logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
+    LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
 
-  log = logging.getLogger(__name__)
+    log = logging.getLogger(__name__)
 
-  try:
+    try:
 
-    addon = AddonInfo()
+        addon = AddonInfo()
 
-    unit_test()
+        unit_test()
 
-  except Exception as ex:
-    logging.error(ex, exc_info = True)
-    raise ex
+    except Exception as ex:
+        logging.error(ex, exc_info=True)
+        raise ex
