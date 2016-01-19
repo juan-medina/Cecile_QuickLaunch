@@ -56,8 +56,9 @@ if __name__ == '__main__':
     try:
         addon = AddonInfo()
 
-        zip_path = os.path.abspath(os.path.join(
-            os.pardir, "dist")) + os.sep + addon.name + "_v" + addon.version + ".zip"
+        zip_path = os.path.abspath(os.path.join(os.pardir,
+                                                "dist")) + \
+            os.sep + addon.name + "_v" + addon.version + ".zip"
 
         license_file = os.path.abspath(os.pardir) + os.sep + "LICENSE"
 

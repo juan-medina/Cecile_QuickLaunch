@@ -30,8 +30,9 @@ def GetWOWPath():
 
 
 def CreateSysLink(original, destination):
-    proc = subprocess.Popen(["MKLINK", "/d", destination, original], stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE, shell=True, universal_newlines=True)
+    proc = subprocess.Popen(["MKLINK", "/d", destination, original],
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                            shell=True, universal_newlines=True)
     out, err = proc.communicate()
     exitcode = proc.returncode
     if not (exitcode == 0):
