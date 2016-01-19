@@ -169,26 +169,3 @@ def get_wowace(addon_url, folder):
         z.extractall(folder)
 
     os.remove(zip_file)
-
-
-def unit_test():
-
-    log.info("Doing unit test")
-    get_wowace("http://www.wowace.com/addons/libdualspec-1-0", "test")
-
-if __name__ == '__main__':
-
-    LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-    logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
-
-    log = logging.getLogger(__name__)
-
-    try:
-
-        addon = AddonInfo()
-
-        unit_test()
-
-    except Exception as ex:
-        logging.error(ex, exc_info=True)
-        raise ex
