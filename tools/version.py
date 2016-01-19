@@ -30,7 +30,7 @@ def ModifyVersion(toc_path, version):
             with codecs.open(toc_path, encoding='utf-8') as input_file:
                 for line in input_file.readlines():
                     if not(line.find("## Version:") == -1):
-                        line = "## Version: " + version + "\n"
+                        line = "## Version: " + version + "\r\n"
                     output_file.write(line)
         os.remove(toc_path)
         os.rename(out_path, toc_path)
