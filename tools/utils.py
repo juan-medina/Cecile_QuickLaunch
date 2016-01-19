@@ -117,8 +117,8 @@ def copy_tree(from_path, to_path):
 
 def get_svn(url, folder):
 
-    proc = subprocess.Popen(["svn", "checkout", url, folder], s
-                            tdout=subprocess.PIPE, stderr=subprocess.PIPE,
+    proc = subprocess.Popen(["svn", "checkout", url, folder],
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                             shell=True, universal_newlines=True)
     out, err = proc.communicate()
     exitcode = proc.returncode
