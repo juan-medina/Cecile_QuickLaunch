@@ -27,11 +27,24 @@ mod.Vars = {
   },
 };
 
---dummy
-function mod.dummy(item)
+--set the macro tooltip
+function mod.setTooltip(tooltip,item)
+  local name, link = _G.GetMacroItem(item.id);
 
-  print(item.id)
+  if name then
+    local itemString = string.match(link, "item[%-?%d:]+");
+    tooltip:SetHyperlink(itemString);
+  else
+    local spellName, _, spellID = _G.GetMacroSpell(item.id);
 
+    if spellName then
+      tooltip:SetSpellByID(spellID);
+    else
+      tooltip:AddLine(item.name or item.text);
+      tooltip:Show();
+    end
+
+  end
 end
 
 --populate
@@ -40,20 +53,27 @@ function mod:PopulateMacros()
   --options
   local token = mod.Profile.token;
   local searchableText,item;
+  local name, icon, _;
 
-  for index = 1, 10 do
+  local maxMacroButtons = _G.MAX_ACCOUNT_MACROS + _G.MAX_CHARACTER_MACROS;
+  for index=1, maxMacroButtons do
 
-    --base text
-    searchableText = token .. ": ";
+    name, icon, _ = _G.GetMacroInfo(index);
 
-    --complete the text
-    searchableText = searchableText .. index;
+    if name then
+      --base text
+      searchableText = token .. ": ";
 
-    --add the text and function
-    item = { text = searchableText , id=index, func = mod.dummy, help = L["MACROS_HELP_ITEM"]};
+      --complete the text
+      searchableText = searchableText .. name;
 
-    --insert the result
-    table.insert(self.items,item);
+      --add the text and function
+      item = { text = searchableText, icon = icon, id = index, type = "macro", help = L["MACROS_HELP_ITEM"], tooltipFunc = mod.setTooltip };
+
+      --insert the result
+      table.insert(self.items,item);
+
+    end
 
   end
 

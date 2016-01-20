@@ -579,6 +579,23 @@ function mod:UseItem(item)
 
 end
 
+--use a macro
+function mod:UseMacro(item)
+
+  local _, icon , body = _G.GetMacroInfo(item.id);
+  item.icon = icon;
+
+  local start, duration, enable = 0,0,true;
+
+  self.secureButton.tooltipFunc = item.tooltipFunc;
+
+  self.secureButton:SetAttribute("type","macro");
+  self.secureButton:SetAttribute("macrotext",body);
+
+  self:PrepareSecureButton(item,start,duration,enable);
+
+end
+
 --use a function
 function mod:useFunc(item)
 
@@ -610,6 +627,8 @@ function mod.OnButtonClick(object)
         mod:UseItem(object.data);
       elseif object.data.type == "spell" then
         mod:UseSpell(object.data);
+      elseif object.data.type == "macro" then
+        mod:UseMacro(object.data);
       end
     end
 
