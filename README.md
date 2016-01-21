@@ -36,11 +36,17 @@ This AddOn include a **minimap icon** and some **slash commands**.
 **AddOns:**
 - Open AddOns configurations windows.
 
+**Macros:**
+- Use any of your character or account macros.
+
 **Mounts:**
 - Summon random or any favorite or not favorite mount.
 
 **Pets:**
 - Summon random or any favorite or not favorite companion pet.
+
+**Professions:**
+- Open your professions book or use your professions skills.
 
 **Specialization and Gear Sets:**
 - Change Specialization and gear sets.
@@ -81,7 +87,13 @@ Teleport to dalaran:
 **CTRL+SHIFT+P** tele **SPACE** dala **ENTER**
 
 Use your Gammon's Braid toy:
-**CTRL+SHIFT+P** gammon **ENTER**]
+**CTRL+SHIFT+P** gammon **ENTER**
+
+Use your cooking fire:
+**CTRL+SHIFT+P** coo **SPACE**r fir **ENTER**
+
+Use your macro "mail":
+**CTRL+SHIFT+P** macr **SPACE** mai **ENTER**
 
 #Created By:
 
