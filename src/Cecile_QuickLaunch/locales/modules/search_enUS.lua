@@ -54,3 +54,7 @@ L["SEARCH_TWO_STEPS_HELP"] = [[
 When 'two steps' search is enabled after using the binding you will search in the list of availables modules, them after selecting a module you will search on the items only of that module.
 
 ]]
+L["SEARCH_MODULE_UP"] = "Move Up"
+L["SEARCH_MODULE_UP_DESC"] = "Move this module UP in the list of modules"
+L["SEARCH_MODULE_DOWN"] = "Move Down"
+L["SEARCH_MODULE_DOWN_DESC"] = "Move this module DOWN in the list of modules"

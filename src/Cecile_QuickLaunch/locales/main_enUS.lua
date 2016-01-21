@@ -51,10 +51,14 @@ This AddOn include a |cff82c5ffminimap icon|r and some |cff82c5ffslash commands|
 - Browse complete and uncompleted achievements and open achievements interface UI.
 |cff82c5ffAddOns:|r
 - Open AddOns configurations windows.
+|cff82c5ffMacros:|r
+- Use any of your character or account macros.
 |cff82c5ffMounts:|r
 - Summon random or any favorite or not favorite mount.
 |cff82c5ffPets:|r
 - Summon random or any favorite or not favorite companion pet.
+|cff82c5ffProfessions:|r
+- Open your professions book or use your professions skills.
 |cff82c5ffSpecialization and Gear Sets:|r
 - Change Specialization and gear sets.
 |cff82c5ffSocial:|r
@@ -90,4 +94,10 @@ Teleport to dalaran:
 |cff82c5ffCTRL+SHIFT+P|r tele |cff82c5ffSPACE|r dala |cff82c5ffENTER|r
 
 Use your Gammon's Braid toy:
-|cff82c5ffCTRL+SHIFT+P|r gammon |cff82c5ffENTER|r]]
+|cff82c5ffCTRL+SHIFT+P|r gammon |cff82c5ffENTER|r
+
+Use your cooking fire:
+|cff82c5ffCTRL+SHIFT+P|r coo |cff82c5ffSPACE|r fir |cff82c5ffENTER|r
+
+Use your macro "mail":
+|cff82c5ffCTRL+SHIFT+P|r macr |cff82c5ffSPACE|r mai |cff82c5ffENTER|r]]

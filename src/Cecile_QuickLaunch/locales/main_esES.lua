@@ -53,10 +53,14 @@ Este AddOn incluye un |cff82c5fficono en el minimapa|r y algunos |cff82c5ffcomma
 - Explorar logros completados y sin completar y abrir la interfaz de logros.
 |cff82c5ffAddOns:|r
 - Abrir las ventanas de configuración de AddOns.
+|cff82c5ffMacros:|r
+- Usar cualquier macro del personaje o cuenta.
 |cff82c5ffMonturas:|r
 - Invocar a una montura aleatoria o cualquier montura en particular.
 |cff82c5ffMascotas:|r
 - Invocar a tus mascotas de compañia aleatoria o cualquier otra en particular.
+|cff82c5ffProfesiones:|r
+- Abrir el libro de profesion o usar las habilidades de la misma.
 |cff82c5ffEspecialización y conjuntos:|r
 - Cambiar de especialización o conjuntos de equipo.
 |cff82c5ffSocial:|r
@@ -64,7 +68,7 @@ Este AddOn incluye un |cff82c5fficono en el minimapa|r y algunos |cff82c5ffcomma
 |cff82c5ffJuguetes:|r
 - Use any favorite or not favorite toys.
 |cff82c5ffEchizos:|r
-- Lanza habilidates, teleportaciones, portales, invocaciones, bufos, etc.
+- Lanza habilidades, teleportaciones, portales, invocaciones, bufos, etc.
 |cff82c5ffObjetos:|r
 - Usa cualquier de los objetos en tus bolsas o que lleves equipados.
 
@@ -89,4 +93,10 @@ Teleportate a dalaran:
 |cff82c5ffCONTROL+MAYUSCULAS+P|r tele |cff82c5ffSPACE|r dala |cff82c5ffINTRO|r
 
 Use el juguete Trenza de Gammon:
-|cff82c5ffCONTROL+MAYUSCULAS+P|r gammon |cff82c5ffINTRO|r]]
+|cff82c5ffCONTROL+MAYUSCULAS+P|r gammon |cff82c5ffINTRO|r
+
+Usar la lumbre de cocinar:
+|cff82c5ffCTRL+SHIFT+P|r coci |cff82c5ffSPACE|r lum |cff82c5ffENTER|r
+
+Usar una macro llamada "correo":
+|cff82c5ffCTRL+SHIFT+P|r macr |cff82c5ffSPACE|r corr |cff82c5ffENTER|r]]

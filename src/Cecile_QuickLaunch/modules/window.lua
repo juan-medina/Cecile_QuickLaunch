@@ -619,8 +619,11 @@ function mod.OnButtonClick(object)
 
     --if we have a funcion call it
     if object.data.func then
-      --object.data:func();
-      mod:useFunc(object.data);
+      if object.data.help then
+        mod:useFunc(object.data);
+      else
+        object.data:func();
+      end
     --if we have type
     elseif object.data.type then
       if object.data.type == "item" then

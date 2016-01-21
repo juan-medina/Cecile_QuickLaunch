@@ -59,3 +59,7 @@ L["SEARCH_TWO_STEPS_HELP"] = [[
 Cuando se activa la busqueda 'en dos pasos' despues de usar la tecla rápida buscarás en la lista de módulos activos, depues trás selecionar un módulo buscarás en los elementos de solo ese módulo.
 
 ]]
+L["SEARCH_MODULE_UP"] = "Move Arriba"
+L["SEARCH_MODULE_UP_DESC"] = "Mueve este modulo hacia ARRIBA en la lista de modulos"
+L["SEARCH_MODULE_DOWN"] = "Move Abajo"
+L["SEARCH_MODULE_DOWN_DESC"] = "Mueve este modulo hacia ABAJO en la lista de modulos"

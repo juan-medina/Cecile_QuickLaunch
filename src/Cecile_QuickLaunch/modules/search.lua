@@ -11,10 +11,13 @@ local L=Engine.Locale;
 --debug
 local debug = Engine.AddOn:GetModule("debug");
 
+local AceConfigDialog = LibStub("AceConfigDialog-3.0");
+
 --module defaults
 mod.Defaults = {
   profile = {
     disableModules = {},
+    moduleOrder ={},
     aliases = {
       cfg = "addon config",
       cql = "cecile_quickLaunch",
@@ -283,19 +286,6 @@ end
 
 
 function mod:LoadProfileSettings()
-  local isDisabled;
-
-  for name,module in pairs(mod.modules) do
-
-    isDisabled =  Engine.Profile.search.disableModules[name];
-
-    if(isDisabled) then
-      module:Disable();
-    else
-      module:Enable();
-    end
-
-  end
 
   self.fontColors = Engine.Profile.window.font.colors;
 
@@ -306,9 +296,10 @@ function mod:LoadProfileSettings()
 end
 
 --profile change
-function mod:OnProfileChanged()
+function mod.OnProfileChanged()
 
-  self:LoadProfileSettings();
+  mod:LoadProfileSettings();
+  mod.loadModuleOrder();
 
 end
 
@@ -595,7 +586,12 @@ function mod:searchAll(text)
   local corrected = mod.MergeWords(merged);
 
   --goes trough all the modules
-  for _,module in pairs(self.modules) do
+  local module,name;
+  local orderTable = Engine.Profile.search.moduleOrder;
+  for i=1,#orderTable do
+
+    name = orderTable[i];
+    module = self.modules[name];
 
     if module:IsEnabled() then
 
@@ -675,10 +671,89 @@ function mod:FindAll(text)
 
 end
 
+function mod.sortModuleOrderName(a,b)
+
+  local result;
+
+  local a_order = mod.modules[a].order;
+  local b_order = mod.modules[b].order;
+
+  if(a_order==b_order) then
+    result = a<b;
+  else
+    result = a_order<b_order;
+  end
+
+  return result;
+
+end
+
+function mod.loadModuleOrder()
+  for name,module in pairs(mod.modules) do
+    module.order = mod.getModuleOrder(name);
+  end
+  mod.resortModules();
+end
+
+function mod.resortModules()
+
+  local orderTable = {};
+
+  for name,_ in pairs(mod.modules) do
+    table.insert(orderTable, name);
+  end
+
+  table.sort(orderTable, mod.sortModuleOrderName);
+
+  Engine.Profile.search.moduleOrder = orderTable;
+
+  for i=1,#orderTable do
+     mod.modules[orderTable[i]].order=i;
+     mod.Options.args.modules.args[orderTable[i]].order=i;
+  end
+
+end
+
+function mod.moveModule(name,direction)
+
+  local currentOrder = mod.modules[name].order;
+  local newOrder = currentOrder + direction;
+
+  for _,module in pairs(mod.modules) do
+    if module.order == newOrder then
+      module.order = currentOrder;
+      break;
+    end
+  end
+
+  mod.modules[name].order = newOrder;
+
+  mod.resortModules();
+
+end
+
+function mod.getModuleOrder(name)
+  local orderTable = Engine.Profile.search.moduleOrder;
+  for i=1,#orderTable do
+    if orderTable[i]==name then
+      return i;
+    end
+  end
+  return -1;
+end
+
 function mod.preInitialize(module)
+
+  local isDisabled =  Engine.Profile.search.disableModules[module:GetName()];
+
+  if(isDisabled) then
+    module:Disable();
+  end
 
   --if we have vars
   if module.Vars then
+
+    module.order = mod.getModuleOrder(module:GetName());
 
     --default profile vars
     module.Defaults = { profile = {} };
@@ -688,6 +763,7 @@ function mod.preInitialize(module)
       type = "group",
       name = module.desc,
       args = {},
+      order = module.order;
     };
 
     --loop vars
@@ -699,7 +775,7 @@ function mod.preInitialize(module)
       if options.type == "boolean" then
         --setup the option
         module.Options.args[name] = {
-          order = options.order,
+          order = options.order+2,
           type = "toggle",
           name = options.label,
           desc = options.desc,
@@ -716,7 +792,7 @@ function mod.preInitialize(module)
       elseif options.type == "string" then
         --setup the option
         module.Options.args[name] = {
-          order = options.order,
+          order = options.order+2,
           type = "input",
           name = options.label,
           desc = options.desc,
@@ -766,6 +842,7 @@ function mod.preInitialize(module)
 
   module.Options.args["enable"] = {
     order = 0,
+    width = "full",
     type = "toggle",
     name = L["SEARCH_ENABLE_MODULE"],
     desc = L["SEARCH_ENABLE_MODULE_DESC"],
@@ -782,8 +859,32 @@ function mod.preInitialize(module)
 
       Engine.Profile.search.disableModules[module:GetName()] = (not value);
 
-    end,
+    end
   };
+
+  module.Options.args["down"] = {
+    order = 1,
+    type = "execute",
+    name = L["SEARCH_MODULE_DOWN"],
+    desc = L["SEARCH_MODULE_DOWN_DESC"],
+    func = function(self)
+      mod.moveModule(module:GetName(),1);
+      AceConfigDialog:SelectGroup(self.appName,"modules");
+    end
+  };
+
+  module.Options.args["up"] = {
+    order = 2,
+    type = "execute",
+    name = L["SEARCH_MODULE_UP"],
+    desc = L["SEARCH_MODULE_UP_DESC"],
+
+    func = function(self)
+      mod.moveModule(module:GetName(),-1);
+      AceConfigDialog:SelectGroup(self.appName,"modules");
+    end
+  };
+
 
   mod.Options.args.modules.args[module:GetName()] = module.Options;
 
@@ -848,4 +949,8 @@ function mod.SecondsToClock(seconds)
   result = result .. string.format("%02.fs",seconds);
 
   return result
+end
+
+function mod:OnEnable()
+  self.loadModuleOrder();
 end
