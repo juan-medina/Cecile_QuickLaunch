@@ -4,7 +4,7 @@ World of Warcraft quick launcher Addon
 
 ![alt tag](http://media-curse.cursecdn.com/attachments/167/501/4c4ead5a907d2c58cfe787503443064c.jpg)
 
-https://www.youtube.com/watch?v=PLhgOrFDbzsb1nZbpycwJNBNQ_hCsch4vk&v=7mTBRzBMpo4
+https://www.youtube.com/watch?v=7mTBRzBMpo4&list=PLhgOrFDbzsb1nZbpycwJNBNQ_hCsch4vk
 
 #Usage:
 
