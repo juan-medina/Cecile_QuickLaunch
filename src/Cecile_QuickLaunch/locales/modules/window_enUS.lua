@@ -40,6 +40,12 @@ L["WINDOW_SELECTED_COLOR_DESC"] = "Change the selected items color"
 L["WINDOW_HELP_SPELL"] = "Press %s to cast,\n %s to cancel."
 L["WINDOW_SHOW_MINIMAP_ICON"] = "Show Minimap Icon"
 L["WINDOW_SHOW_MINIMAP_ICON_DESC"] = "Enable/Disable showing the minimap icon"
+L["WINDOW_ICON_ON_FUNC"] = "Always show button/icon when selecting"
+L["WINDOW_ICON_ON_FUNC_DESC"] = "Enable/Disable showing the button/icon when selecting simple results"
+L["WINDOW_ICON_HELP"] = [[
 
+Some search results, as Mounts or Pets, does not required to have a button to launch them.
 
+Enabling "Always show button/icon when selecting" will always display the button, even if its not required. Remove this option to launch these directly.
 
+]]

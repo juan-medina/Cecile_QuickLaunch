@@ -138,6 +138,8 @@ function mod.GetClientIcon(client)
     return "Interface\\FriendsFrame\\Battlenet-WTCGicon";
   elseif ( client == _G.BNET_CLIENT_HEROES ) then
     return "Interface\\FriendsFrame\\Battlenet-HotSicon";
+  elseif ( client == _G.BNET_CLIENT_OVERWATCH ) then
+    return "Interface\\FriendsFrame\\Battlenet-Overwatchicon";
   else
     return "Interface\\FriendsFrame\\Battlenet-Battleneticon";
   end
@@ -161,22 +163,24 @@ function mod:PopulateBNetFriends()
 
   for index = 1, numFriends do
 
-    local presenceID, presenceName, battleTag, _, toonName, toonID, client, isOnline = _G.BNGetFriendInfo(index);
-    local icon = mod.GetClientIcon(client);
+    local bnetIDAccount, accountName, battleTag, _, _, bnetIDGameAccount, client, isOnline = _G.BNGetFriendInfo(index)
 
     if isOnline then
 
+      local icon = mod.GetClientIcon(client);
+
       if client == _G.BNET_CLIENT_WOW then
 
-        local _, _, _, _, _, faction, _, class, _, _, level, _ = _G.BNGetToonInfo(toonID or presenceID);
+        local _, characterName, _, _, _, faction, _, class, _, _, level, _, _, _, _, toonID, _, _, _  = _G.BNGetGameAccountInfo(bnetIDGameAccount or bnetIDAccount);
+
         --base text
-        charText = battleTag .. " (".. toonName ..  ")  [" .. level .. " " .. class .. "]";
+        charText = battleTag .. " (".. characterName ..  ")  [" .. level .. " " .. class .. "]";
 
         if returnWhispers then
           searchableText = whispersToken .. ": " .. charText;
 
           --add the text and function
-          item = { text = searchableText , id=presenceName, func = mod.whisper, icon=icon, help=L["SOCIAL_HELP_WHISPER"] };
+          item = { text = searchableText , id=accountName, func = mod.whisper, icon=icon, help=L["SOCIAL_HELP_WHISPER"] };
 
           --insert the result
           table.insert(mod.items,item);
@@ -200,7 +204,7 @@ function mod:PopulateBNetFriends()
           searchableText = whispersToken .. ": " .. charText;
 
           --add the text and function
-          item = { text = searchableText , id=presenceName, func = mod.whisper, icon=icon, help=L["SOCIAL_HELP_WHISPER"] };
+          item = { text = searchableText , id=accountName, func = mod.whisper, icon=icon, help=L["SOCIAL_HELP_WHISPER"] };
 
           --insert the result
           table.insert(self.items,item);

@@ -1,3 +1,6 @@
+v1.2.1
+- Search that don't require an additional button click could again been invoke directly
+- Fix social module for Battle.Net changes
 v1.2.0
 - Added Macro module
 - Now the modules could be sorted, for example move UP or DOWN in the list

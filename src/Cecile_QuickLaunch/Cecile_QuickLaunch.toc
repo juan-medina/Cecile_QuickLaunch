@@ -2,7 +2,7 @@
 ## Title: |cffffffffCecile|r_|cfffff569QuickLaunch|r
 ## Notes: Quick Access to all stuff
 ## Author: Cecile
-## Version: 1.2.0.release
+## Version: 1.2.1.release
 ## SavedVariables: Cecile_QuickLaunchDB
 ## OptionalDeps:
 ## X-Icon: Interface\AddOns\Cecile_QuickLaunch\media\icons\minimap

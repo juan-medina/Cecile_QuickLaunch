@@ -45,3 +45,12 @@ L["WINDOW_SELECTED_COLOR_DESC"] = "Cambia el color de los elementos seleccionado
 L["WINDOW_HELP_SPELL"] = "Pulsa %s para lanzar,\n %s para cancelar."
 L["WINDOW_SHOW_MINIMAP_ICON"] = "Mostra Icono en Minimapa"
 L["WINDOW_SHOW_MINIMAP_ICON_DESC"] = "Activa/Desactiva el mostrar el icono en el minimap"
+L["WINDOW_ICON_ON_FUNC"] = "Mostrar siempre el boton/icono al seleccionar"
+L["WINDOW_ICON_ON_FUNC_DESC"] = "Activa/Desactiva el mostrar el boton/icono cuando se selecciona resultados simples"
+L["WINDOW_ICON_HELP"] = [[
+
+Algunos resultados, como Monturas o Mascotas, no requieren el usar un boton para ser lanzados.
+
+Activando "Mostrar siempre el boton/icono al seleccionar" siempre mostrara el boton/icono, incluso cuando no es necesario. Desactive esta opcion para lanzarlos directamente
+
+]]

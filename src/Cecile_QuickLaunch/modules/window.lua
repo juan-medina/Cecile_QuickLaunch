@@ -170,6 +170,7 @@ mod.Defaults = {
         b = 1,
       },
     },
+    iconOnFunc = true,
   },
 };
 
@@ -200,6 +201,28 @@ mod.Options = {
             Engine.AddOn:OnCfgChange();
 
           end,
+        },
+        iconOnFunc = {
+          order = 2,
+          type = "toggle",
+          name = L["WINDOW_ICON_ON_FUNC"],
+          desc = L["WINDOW_ICON_ON_FUNC_DESC"],
+          get = function()
+            return Engine.Profile.window.iconOnFunc;
+          end,
+          set = function(_,value)
+
+            Engine.Profile.window.iconOnFunc = value;
+
+            Engine.AddOn:OnCfgChange();
+
+          end,
+        },
+        help = {
+          order = 3,
+          type = "description",
+          name = L["WINDOW_ICON_HELP"],
+          width = "full",
         },
       },
     },
@@ -455,6 +478,8 @@ function mod:LoadProfileSettings()
 
   self.secureButton:SetBorderColor(self.colors.border.r, self.colors.border.g, self.colors.border.b);
 
+  self.iconOnFunc = Engine.Profile.window.iconOnFunc;
+
 end
 
 --on escape pressed
@@ -619,7 +644,7 @@ function mod.OnButtonClick(object)
 
     --if we have a funcion call it
     if object.data.func then
-      if object.data.help then
+      if object.data.help and mod.iconOnFunc then
         mod:useFunc(object.data);
       else
         object.data:func();

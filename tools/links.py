@@ -24,7 +24,7 @@ log = None
 
 
 def GetWOWPath():
-    WOWPath = "C:\Program Files (x86)\World of Warcraft"
+    WOWPath = "C:\data\programs\World of Warcraft"
     log.info("WOW Path : '%s'", WOWPath)
     return WOWPath
 
