@@ -1,6 +1,6 @@
 ###############################################################
-# Program: check.py
-# Description: Report lua errors & warnings
+# Program: new.py
+# Description: create a new search module
 # Author: jamedina@gmail.com
 # -------------------------------------------------------------
 # Required Modules:
@@ -17,16 +17,13 @@ import subprocess
 import logging
 import sys
 
-from utils import AddonInfo
-
 # Log object
 log = None
 
 
-def CheckLua(addon):
+def launch_pytemplate():
 
-    args = ["luacheck", addon.src_folder, "--globals", "LibStub",
-            "--exclude-files", addon.main_addon + os.sep + "libs"]
+    args = ["python", "PyTemplate\PyTemplate.py", "QuickLaunchPluging.json"]
 
     proc = subprocess.Popen(args, shell=True, universal_newlines=True)
 
@@ -41,9 +38,7 @@ if __name__ == '__main__':
 
     try:
 
-        addon = AddonInfo()
-
-        CheckLua(addon)
+        launch_pytemplate()
 
     except Exception as ex:
         logging.error(ex, exc_info=True)

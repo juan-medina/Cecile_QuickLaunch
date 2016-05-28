@@ -1,0 +1,6 @@
+[submodule "templates/PyTemplate"]
+	path = templates/PyTemplate
+	url = git@github.com:cecile/PyTemplate.git
+[submodule "Cecile_Tools"]
+	path = Cecile_Tools
+	url = git@github.com:cecile/Cecile_Tools.git
