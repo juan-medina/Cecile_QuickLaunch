@@ -11,6 +11,9 @@ local mod = search:NewModule("toys");
 --debug
 local debug = Engine.AddOn:GetModule("debug");
 
+--version
+local Version = Engine.AddOn:GetModule("version");
+
 --get the locale
 local L=Engine.Locale;
 
@@ -63,7 +66,12 @@ function mod:Populate()
   local favoriteTag = mod.Profile.favoriteTag;
 
   --get number of toys
-  _G.C_ToyBox.FilterToys();
+  if Version.Legion then
+    _G.C_ToyBox.SetFilterString("");
+  else
+    _G.C_ToyBox.FilterToys();
+  end
+
   local numToys = _G.C_ToyBox.GetNumToys();
 
   --local vars

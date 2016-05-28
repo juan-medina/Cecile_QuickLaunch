@@ -6,6 +6,9 @@ World of Warcraft quick launcher Addon
 
 https://www.youtube.com/watch?v=7mTBRzBMpo4&list=PLhgOrFDbzsb1nZbpycwJNBNQ_hCsch4vk
 
+#Special thanks to:
+Laodice, Halloran, cyblade.
+
 #Usage:
 
 First you need to set-up a **keybinding** in the window settings to open the launcher, by default it's **CTRL+SHIFT+P**.

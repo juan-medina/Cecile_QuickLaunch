@@ -141,6 +141,10 @@ end
 --store the add-on version
 function mod:OnInitialize()
 
+  --get if we are in Legion
+  local _, _, _, Toc = _G.GetBuildInfo()
+  self.Legion = ( Toc >= 70000)
+
   --default values
   self.Label = "0.0.0";
   self.Major = 0;

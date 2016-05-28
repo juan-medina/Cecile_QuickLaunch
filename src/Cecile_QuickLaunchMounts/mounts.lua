@@ -8,6 +8,9 @@ local Engine = _G.Cecile_QuickLaunch;
 local search = Engine.AddOn:GetModule("search");
 local mod = search:NewModule("mounts");
 
+--version
+local Version = Engine.AddOn:GetModule("version");
+
 --debug
 local debug = Engine.AddOn:GetModule("debug");
 
@@ -52,7 +55,11 @@ mod.Vars = {
 function mod.summonMount(item)
 
   --summon the mount
-  _G.C_MountJournal.Summon(item.id);
+  if Version.Legion then
+    _G.C_MountJournal.SummonByID(item.id);
+  else
+    _G.C_MountJournal.Summon(item.id);
+  end
 
 end
 
@@ -67,7 +74,13 @@ end
 --set the mount tooltip
 function mod.setTooltip(tooltip,item)
 
-  local _,spellID = _G.C_MountJournal.GetMountInfo(item.id);
+  local _,spellID;
+
+  if Version.Legion then
+    _,spellID = _G.C_MountJournal.GetMountInfoByID(item.id);
+  else
+    _,spellID = _G.C_MountJournal.GetMountInfo(item.id);
+  end
 
   tooltip:SetMountBySpellID(spellID);
 
@@ -95,7 +108,13 @@ function mod:PopulateMounts()
   for index = 1, numMounts do
 
     --get the mount details
-    local creatureName, _, icon, active, isUsable, _, isFavorite, _, _, _, isCollected = _G.C_MountJournal.GetMountInfo(index);
+    local _, creatureName,  icon, active, isUsable, isFavorite, isCollected ;
+
+    if Version.Legion then
+      creatureName, _, icon, active, isUsable, _, isFavorite, _, _, _, isCollected = _G.C_MountJournal.GetMountInfoByID(index);
+    else
+      creatureName, _, icon, active, isUsable, _, isFavorite, _, _, _, isCollected = _G.C_MountJournal.GetMountInfo(index);
+    end
 
     --if its usable (faction, profesion, etc) and we have it
     if isUsable and isCollected then

@@ -1,3 +1,6 @@
+v1.3.0
+- Compatible with Live and Legion Beta (require to enable load "out of date" addons)
+- Now auto equip set on spec change happen actually at spec change!
 v1.2.1
 - Search that don't require an additional button click could again been invoke directly
 - Fix social module for Battle.Net changes

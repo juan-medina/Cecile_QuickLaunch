@@ -11,6 +11,9 @@ local L=Engine.Locale;
 --debug
 local debug = Engine.AddOn:GetModule("debug");
 
+--Version
+local Version = Engine.AddOn:GetModule("version");
+
 --sharemedia
 local LSM = LibStub("LibSharedMedia-3.0");
 
@@ -532,8 +535,6 @@ function mod:PrepareSecureButton(item,start,duration,enable)
 
   --if we are in combat display a message and return
   if self.combat then
-    --get version
-    local Version = Engine.AddOn:GetModule("version");
 
     print(string.format(L["WINDOW_ERROR_IN_COMBAT"],Version.Title));
     return;
@@ -560,7 +561,12 @@ function mod:PrepareSecureButton(item,start,duration,enable)
     else
       cooldown:Show();
     end
-    _G.CooldownFrame_SetTimer(cooldown, start, duration, enable);
+    if Version.Legion then
+      _G.CooldownFrame_Set(cooldown, start, duration, enable);
+    else
+      _G.CooldownFrame_SetTimer(cooldown, start, duration, enable);
+    end
+
   else
     cooldown:Hide();
   end
@@ -766,7 +772,11 @@ function mod.SetSolidColor(object, r,g,b,a)
     object.texture:SetAllPoints(true);
   end
 
-  object.texture:SetTexture(r,g,b,a);
+  if Version.Legion then
+    object.texture:SetColorTexture(r,g,b,a);
+  else
+    object.texture:SetTexture(r,g,b,a);
+  end
 
 end
 
@@ -1420,8 +1430,6 @@ function mod:Show(value)
 
       --if we are in combat display a message and return
       if self.combat then
-        --get version
-        local Version = Engine.AddOn:GetModule("version");
 
         print(string.format(L["WINDOW_ERROR_IN_COMBAT"],Version.Title));
         return;

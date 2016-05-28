@@ -8,6 +8,9 @@ local Engine = _G.Cecile_QuickLaunch;
 local search = Engine.AddOn:GetModule("search");
 local mod = search:NewModule("specgear");
 
+--version
+local Version = Engine.AddOn:GetModule("version");
+
 --debug
 local debug = Engine.AddOn:GetModule("debug");
 
@@ -101,6 +104,38 @@ function mod.specTooltip(tooltip,item)
 
 end
 
+function mod.PlayerSpecChange(_,unit)
+
+  if unit=="player" then
+
+    --if we need to auto equip the gear set
+    if mod.Profile.autoEquipSet then
+
+      --create a new item with the name of the specialization
+      local name,activeIndex;
+      if Version.Legion then
+        activeIndex = _G.GetSpecialization();
+        name = select(2,_G.GetSpecializationInfo(activeIndex));
+      else
+        activeIndex = _G.GetActiveSpecGroup();
+        name = select(2,_G.GetSpecializationInfo(_G.GetSpecialization(false, false, activeIndex)));
+      end
+
+      local itemSet = { id = name } ;
+
+      --equip the set
+      mod.EquippSet(itemSet);
+
+    end
+
+  end
+
+end
+
+function mod:OnInitialize()
+  search.preInitialize(mod);
+  Engine.AddOn:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED",self.PlayerSpecChange);
+end
 
 --equip a set
 function mod.EquippSet(item)
@@ -130,21 +165,49 @@ end
 --switch spec
 function mod.SpecSwitch(item)
 
-  --if we need to auto equip the gear set
-  if mod.Profile.autoEquipSet then
-
-    --create a new item with the name of the specialization
-    local name = select(2,_G.GetSpecializationInfo(_G.GetSpecialization(false, false, item.id)));
-    local itemSet = { id = name } ;
-
-    --equip the set
-    mod.EquippSet(itemSet);
-
+  --set the spec
+  if Version.Legion then
+    _G.SetSpecialization(item.id);
+  else
+    _G.SetActiveSpecGroup(item.id);
   end
 
-  --set the spec
-  _G.SetActiveSpecGroup(item.id);
+end
 
+function mod:PopulateSpecsLegion()
+
+  --options
+  local tokenSpec = mod.Profile.tokenSpec;
+  local activeTag = mod.Profile.activeTag;
+  local inactiveTag = mod.Profile.inactiveTag;
+  local activeIndex = _G.GetSpecialization();
+  local active;
+  local searchableText;
+  local item;
+  local shortName;
+
+  for index = 1, _G.GetNumSpecializations() do
+
+    local _, name, _, icon  = _G.GetSpecializationInfo(index);
+
+      --its this the active spec?
+      active = (index == activeIndex and true or false);
+
+      --base text
+      searchableText = tokenSpec .. ": ";
+
+      --complete the text
+      searchableText = searchableText .. name .. " (" .. (active and activeTag or inactiveTag) .. ")";
+
+      shortName = tokenSpec .. ": " .. name;
+
+      --add the text and function
+      item = { name = shortName, text = searchableText , id=index, func = mod.SpecSwitch, icon=icon, help = L["SPECGEAR_HELP_SPEC"], tooltipFunc = mod.specTooltip };
+
+      --insert the result
+      table.insert(self.items,item);
+
+  end
 end
 
 --populate specializations
@@ -231,7 +294,11 @@ function mod:Refresh()
 
   --return specializations
   if self.Profile.returnSpecs then
-    self:PopulateSpecs();
+    if Version.Legion then
+      self:PopulateSpecsLegion();
+    else
+      self:PopulateSpecs();
+    end
   end
 
   --return sets
