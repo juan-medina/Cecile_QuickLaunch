@@ -1,3 +1,5 @@
+v1.3.1
+- Fix a bug when certain equipped items can be not obtained
 v1.3.0
 - Compatible with Live and Legion Beta (require to enable load "out of date" addons)
 - Now auto equip set on spec change happen actually at spec change!

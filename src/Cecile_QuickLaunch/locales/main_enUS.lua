@@ -22,7 +22,7 @@ L["PROFILES"] = "Profiles"
 L["BINDING_DESC"] = "Open Quick Launch"
 L["LAUNCH_BINDING_DESC"] = "Launch Last Command"
 L["ABOUT"] = [[|cff0070deSpecial thanks to:|r
-|cff82c5ffLaodice|r, |cff82c5ffHalloran|r, |cff82c5fficyblade|r.
+|cff82c5ffLaodice|r, |cff82c5ffHalloran|r, |cff82c5fficyblade|r, |cff82c5ffiKetho|r.
 
 |cff0070deUsage:|r
 

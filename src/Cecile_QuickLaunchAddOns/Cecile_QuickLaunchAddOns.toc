@@ -2,7 +2,7 @@
 ## Title: |cffffffffCecile|r_|cfffff569QuickLaunch|rAddons
 ## Notes: Addons module for |cffffffffCecile|r_|cfffff569QuickLaunch|r
 ## Author: Cecile
-## Version: 1.3.0.release
+## Version: 1.3.1.release
 ## OptionalDeps:
 ## Dependencies: Cecile_QuickLaunch
 

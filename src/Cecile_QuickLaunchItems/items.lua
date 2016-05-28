@@ -114,20 +114,24 @@ function mod:PopulateEquippedItems()
 
       name, _, _, _, _, _, _, _, _, icon = _G.GetItemInfo(itemId);
 
-      searchableText = token .. ": " .. name .. " (" .. equippedToken .. ")";
+      if name then
 
-      start, duration, enable = _G.GetItemCooldown(itemId);
+        searchableText = token .. ": " .. name .. " (" .. equippedToken .. ")";
 
-      if start and start>0 and enable==1 then
-        remain = duration - (_G.GetTime() - start);
-        searchableText = searchableText .. " ["..search.SecondsToClock(remain).."]";
+        start, duration, enable = _G.GetItemCooldown(itemId);
+
+        if start and start>0 and enable==1 then
+          remain = duration - (_G.GetTime() - start);
+          searchableText = searchableText .. " ["..search.SecondsToClock(remain).."]";
+        end
+
+        --add the text and function
+        item = { name = name, text = searchableText , id=itemId, type = "item", icon = icon, help = mod.help, tooltipFunc = mod.setTooltip };
+
+        --insert the result
+        table.insert(self.items,item);
+
       end
-
-      --add the text and function
-      item = { name = name, text = searchableText , id=itemId, type = "item", icon = icon, help = mod.help, tooltipFunc = mod.setTooltip };
-
-      --insert the result
-      table.insert(self.items,item);
 
     end
 

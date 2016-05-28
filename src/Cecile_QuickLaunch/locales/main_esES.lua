@@ -24,7 +24,7 @@ L["PROFILES"] = "Perfiles"
 L["BINDING_DESC"] = "Abrir Lanzador Rápido"
 L["LAUNCH_BINDING_DESC"] = "Lanzar Último Comando"
 L["ABOUT"] = [[|cff0070deAgradecimientos especiales para:|r
-|cff82c5ffLaodice|r, |cff82c5ffHalloran|r, |cff82c5fficyblade|r.
+|cff82c5ffLaodice|r, |cff82c5ffHalloran|r, |cff82c5fficyblade|r, |cff82c5ffiKetho|r.
 
 |cff0070deUso:|r
 
