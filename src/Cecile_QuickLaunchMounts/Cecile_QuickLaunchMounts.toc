@@ -2,7 +2,7 @@
 ## Title: |cffffffffCecile|r_|cfffff569QuickLaunch|rMounts
 ## Notes: Mounts module for |cffffffffCecile|r_|cfffff569QuickLaunch|r
 ## Author: Cecile
-## Version: 1.2.0.release
+## Version: 1.3.0.release
 ## OptionalDeps:
 ## Dependencies: Cecile_QuickLaunch
 
