@@ -57,7 +57,6 @@ do
 		local frame = CreateFrame("Frame", nil, UIParent)
 		frame:SetHeight(44)
 		frame:SetWidth(200)
-		frame:SetPoint("CENTER", UIParent, "CENTER")
 
 		local label = frame:CreateFontString(nil,"OVERLAY","GameFontNormalSmall")
 			label:SetPoint("TOPLEFT",frame,"TOPLEFT",0,0)
