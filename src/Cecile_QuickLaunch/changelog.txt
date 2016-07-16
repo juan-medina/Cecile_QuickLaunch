@@ -1,3 +1,5 @@
+v1.4.0
+- Update for 7.0
 v1.3.1
 - Fix a bug when certain equipped items can be not obtained
 v1.3.0
