@@ -1,3 +1,5 @@
+v1.4.2
+- Update for 7.2
 v1.4.0
 - Update for 7.0
 v1.3.1

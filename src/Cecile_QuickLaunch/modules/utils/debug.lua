@@ -179,7 +179,8 @@ function mod:OnInitialize()
 
   frame.msg:SetMaxLines(10000);
   frame.msg:SetFading(false);
-  frame.msg:SetFontObject("GameFontHighlightLeft");
+  frame.msg:SetFontObject(_G.ChatFontNormal);
+  frame.msg:SetJustifyH("LEFT");
   frame.msg:EnableMouseWheel(true);
 
   -- Hook scrolling to scroll up down with mouse wheel. shift mouse wheel
