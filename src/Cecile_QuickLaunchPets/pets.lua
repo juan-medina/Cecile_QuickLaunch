@@ -84,6 +84,8 @@ function mod:PopulatePets()
   local noFavorites = mod.Profile.noFavorites;
   local favoriteTag = mod.Profile.favoriteTag;
 
+  _G.C_PetJournal.SetSearchFilter('');
+
   --get number of pets
   local numPets = _G.C_PetJournal.GetNumPets();
 

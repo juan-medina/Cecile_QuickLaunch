@@ -66,11 +66,7 @@ function mod:Populate()
   local favoriteTag = mod.Profile.favoriteTag;
 
   --get number of toys
-  if Version.Legion then
-    _G.C_ToyBox.SetFilterString("");
-  else
-    _G.C_ToyBox.FilterToys();
-  end
+  _G.C_ToyBox.SetFilterString("");
 
   local numToys = _G.C_ToyBox.GetNumToys();
 

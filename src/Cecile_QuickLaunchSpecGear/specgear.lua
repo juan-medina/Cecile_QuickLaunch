@@ -113,13 +113,9 @@ function mod.PlayerSpecChange(_,unit)
 
       --create a new item with the name of the specialization
       local name,activeIndex;
-      if Version.Legion then
-        activeIndex = _G.GetSpecialization();
-        name = select(2,_G.GetSpecializationInfo(activeIndex));
-      else
-        activeIndex = _G.GetActiveSpecGroup();
-        name = select(2,_G.GetSpecializationInfo(_G.GetSpecialization(false, false, activeIndex)));
-      end
+
+      activeIndex = _G.GetSpecialization();
+      name = select(2,_G.GetSpecializationInfo(activeIndex));
 
       local itemSet = { id = name } ;
 
@@ -166,15 +162,11 @@ end
 function mod.SpecSwitch(item)
 
   --set the spec
-  if Version.Legion then
-    _G.SetSpecialization(item.id);
-  else
-    _G.SetActiveSpecGroup(item.id);
-  end
+  _G.SetSpecialization(item.id);
 
 end
 
-function mod:PopulateSpecsLegion()
+function mod:PopulateSpecs()
 
   --options
   local tokenSpec = mod.Profile.tokenSpec;
@@ -208,48 +200,6 @@ function mod:PopulateSpecsLegion()
       table.insert(self.items,item);
 
   end
-end
-
---populate specializations
-function mod:PopulateSpecs()
-
-  --options
-  local tokenSpec = mod.Profile.tokenSpec;
-  local activeTag = mod.Profile.activeTag;
-  local inactiveTag = mod.Profile.inactiveTag;
-  local activeIndex = _G.GetActiveSpecGroup();
-  local active;
-  local searchableText;
-  local item;
-  local shortName;
-
-  for index = 1, _G.GetNumSpecGroups() do
-
-    if _G.GetSpecialization(false, false, index) then
-
-      local _, name, _, icon  = _G.GetSpecializationInfo(_G.GetSpecialization(false, false, index));
-
-      --its this the active spec?
-      active = (index == activeIndex and true or false);
-
-      --base text
-      searchableText = tokenSpec .. ": ";
-
-      --complete the text
-      searchableText = searchableText .. name .. " (" .. (active and activeTag or inactiveTag) .. ")";
-
-      shortName = tokenSpec .. ": " .. name;
-
-      --add the text and function
-      item = { name = shortName, text = searchableText , id=index, func = mod.SpecSwitch, icon=icon, help = L["SPECGEAR_HELP_SPEC"], tooltipFunc = mod.specTooltip };
-
-      --insert the result
-      table.insert(self.items,item);
-
-    end
-
-  end
-
 end
 
 --populate equippement sets
@@ -294,11 +244,7 @@ function mod:Refresh()
 
   --return specializations
   if self.Profile.returnSpecs then
-    if Version.Legion then
-      self:PopulateSpecsLegion();
-    else
       self:PopulateSpecs();
-    end
   end
 
   --return sets

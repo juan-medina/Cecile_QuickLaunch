@@ -561,11 +561,8 @@ function mod:PrepareSecureButton(item,start,duration,enable)
     else
       cooldown:Show();
     end
-    if Version.Legion then
-      _G.CooldownFrame_Set(cooldown, start, duration, enable);
-    else
-      _G.CooldownFrame_SetTimer(cooldown, start, duration, enable);
-    end
+
+    _G.CooldownFrame_Set(cooldown, start, duration, enable);
 
   else
     cooldown:Hide();
@@ -772,11 +769,7 @@ function mod.SetSolidColor(object, r,g,b,a)
     object.texture:SetAllPoints(true);
   end
 
-  if Version.Legion then
-    object.texture:SetColorTexture(r,g,b,a);
-  else
-    object.texture:SetTexture(r,g,b,a);
-  end
+  object.texture:SetColorTexture(r,g,b,a);
 
 end
 

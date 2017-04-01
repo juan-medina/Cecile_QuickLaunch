@@ -55,11 +55,7 @@ mod.Vars = {
 function mod.summonMount(item)
 
   --summon the mount
-  if Version.Legion then
-    _G.C_MountJournal.SummonByID(item.id);
-  else
-    _G.C_MountJournal.Summon(item.id);
-  end
+  _G.C_MountJournal.SummonByID(item.id);
 
 end
 
@@ -76,11 +72,7 @@ function mod.setTooltip(tooltip,item)
 
   local _,spellID;
 
-  if Version.Legion then
-    _,spellID = _G.C_MountJournal.GetMountInfoByID(item.id);
-  else
-    _,spellID = _G.C_MountJournal.GetMountInfo(item.id);
-  end
+  _,spellID = _G.C_MountJournal.GetMountInfoByID(item.id);
 
   tooltip:SetMountBySpellID(spellID);
 
@@ -95,8 +87,10 @@ function mod:PopulateMounts()
   local noFavorites = mod.Profile.noFavorites;
   local favoriteTag = mod.Profile.favoriteTag;
 
-  --get max num of mounts
-  local numMounts = _G.C_MountJournal.GetNumMounts();
+  _G.MountJournal.searchBox:SetText("");
+
+  --get mounts ids
+  local mountIDs = _G.C_MountJournal.GetMountIDs();
 
   --to format the text
   local searchableText, item;
@@ -105,16 +99,13 @@ function mod:PopulateMounts()
   local mounted = false;
 
   --loop mounts
-  for index = 1, numMounts do
+  for _, mountID in ipairs(mountIDs) do
 
     --get the mount details
     local _, creatureName,  icon, active, isUsable, isFavorite, isCollected ;
 
-    if Version.Legion then
-      creatureName, _, icon, active, isUsable, _, isFavorite, _, _, _, isCollected = _G.C_MountJournal.GetMountInfoByID(index);
-    else
-      creatureName, _, icon, active, isUsable, _, isFavorite, _, _, _, isCollected = _G.C_MountJournal.GetMountInfo(index);
-    end
+    creatureName, _, icon, active, isUsable, _, isFavorite, _, _, _, isCollected = _G.C_MountJournal.GetMountInfoByID(mountID);
+
 
     --if its usable (faction, profesion, etc) and we have it
     if isUsable and isCollected then
@@ -139,7 +130,7 @@ function mod:PopulateMounts()
       if searchableText then
 
         --set our function and text
-        item = { name = creatureName, text = searchableText , id=index, func = mod.summonMount, icon = icon, tooltipFunc = mod.setTooltip, help = L["MOUNT_HELP_ITEM"]};
+        item = { name = creatureName, text = searchableText , id=mountID, func = mod.summonMount, icon = icon, tooltipFunc = mod.setTooltip, help = L["MOUNT_HELP_ITEM"]};
 
         --add the item
         table.insert(self.items,item);
