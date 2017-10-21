@@ -87,7 +87,10 @@ function mod:PopulateMounts()
   local noFavorites = mod.Profile.noFavorites;
   local favoriteTag = mod.Profile.favoriteTag;
 
-  _G.MountJournal.searchBox:SetText("");
+  if _G.MountJournal and _G.MountJournal.searchBox then
+    _G.MountJournal.searchBox:SetText("");
+  end
+  _G.C_MountJournal.SetSearch('');
 
   --get mounts ids
   local mountIDs = _G.C_MountJournal.GetMountIDs();
