@@ -1,8 +1,8 @@
-## Interface: 70200
+## Interface: 70300
 ## Title: |cffffffffCecile|r_|cfffff569QuickLaunch|rSocial
 ## Notes: Spec & Gear module for |cffffffffCecile|r_|cfffff569QuickLaunch|r
 ## Author: Cecile
-## Version: 1.4.2.release
+## Version: 1.4.3.release
 ## OptionalDeps:
 ## Dependencies: Cecile_QuickLaunch
 
