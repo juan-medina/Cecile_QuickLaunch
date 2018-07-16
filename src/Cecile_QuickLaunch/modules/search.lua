@@ -16,7 +16,9 @@ local AceConfigDialog = LibStub("AceConfigDialog-3.0");
 --module defaults
 mod.Defaults = {
   profile = {
-    disableModules = {},
+    disableModules = {
+      ["achievements"] = true,
+    },
     moduleOrder ={},
     aliases = {
       cfg = "addon config",
