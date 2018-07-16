@@ -137,17 +137,18 @@ end
 function mod.EquippSet(item)
 
   --loop the sets
-  for i = 1, _G.GetNumEquipmentSets() do
+  for i = 0, _G.C_EquipmentSet.GetNumEquipmentSets() do
 
     --get the set name and if is equipped
-    local name, _, _, equipped, _, _, _, _, _ = _G.GetEquipmentSetInfo(i);
+    local name, _, _, equipped, _, _, _, _, _ = _G.C_EquipmentSet.GetEquipmentSetInfo(i);
 
     --if the set is named as what we are searching
     if item.id == name then
 
       --if not equipped, just equip it
       if not equipped then
-        _G.UseEquipmentSet(name);
+         local id = _G.C_EquipmentSet.GetEquipmentSetID(name)
+        _G.C_EquipmentSet.UseEquipmentSet(id);
       end
 
       --all done
@@ -212,24 +213,27 @@ function mod:PopulateSets()
   local item, searchableText;
   local shortName;
 
-  for index = 1, _G.GetNumEquipmentSets() do
+  for index = 0, _G.C_EquipmentSet.GetNumEquipmentSets() do
 
     --get the set name, icon and if is equipped
-    local name, icon, _, equipped, _, _, _, _, _ = _G.GetEquipmentSetInfo(index);
+    local name, icon, _, equipped, _, _, _, _, _ = _G.C_EquipmentSet.GetEquipmentSetInfo(index);
 
-    --base text
-    searchableText = tokenSet .. ": ";
+    if name then
+      --base text
+      searchableText = tokenSet .. ": ";
 
-    --complete the text
-    searchableText = searchableText .. name .. " (" .. (equipped and equippedTag or umequippedTag) .. ")";
+      --complete the text
+      searchableText = searchableText .. name .. " (" .. (equipped and equippedTag or umequippedTag) .. ")";
 
-    shortName = tokenSet .. ": " .. name;
+      shortName = tokenSet .. ": " .. name;
 
-    --add the text and function
-    item = { name = shortName , text = searchableText , id=name, func = mod.EquippSet, icon=icon, help = L["SPECGEAR_HELP_SET"], tooltipFunc = mod.setTooltip };
+      --add the text and function
+      item = { name = shortName , text = searchableText , id=name, func = mod.EquippSet, icon=icon, help = L["SPECGEAR_HELP_SET"], tooltipFunc = mod.setTooltip };
 
-    --insert the result
-    table.insert(self.items,item);
+      --insert the result
+      table.insert(self.items,item);
+
+    end
 
   end
 

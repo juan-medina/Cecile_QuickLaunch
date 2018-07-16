@@ -16,7 +16,9 @@ local AceConfigDialog = LibStub("AceConfigDialog-3.0");
 --module defaults
 mod.Defaults = {
   profile = {
-    disableModules = {},
+    disableModules = {
+      ["achievements"] = true,
+    },
     moduleOrder ={},
     aliases = {
       cfg = "addon config",
@@ -343,7 +345,8 @@ function mod:Wipe()
   for _,module in pairs(self.modules) do
     if module:IsEnabled() then
       --clear items
-      _G.wipe(module.items);
+      --_G.wipe(module.items);
+      module.items = {}
     end
   end
 
@@ -604,7 +607,8 @@ function mod:searchAll(text)
       end
 
       --we dont need it anymore
-      _G.wipe(items);
+      --_G.wipe(items);
+      items = {}
 
     end
 
@@ -664,8 +668,10 @@ function mod:FindAll(text)
 
   end
 
-  _G.wipe(blacklistItems);
-  _G.wipe(findItems);
+  --_G.wipe(blacklistItems);
+  --_G.wipe(findItems);
+  blacklistItems={}
+  findItems={}
 
   return items;
 

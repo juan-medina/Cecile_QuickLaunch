@@ -94,10 +94,10 @@ function mod:PopulatePets()
 
   --loop the pets
   for index = 1, numPets do
-    local petID, _, owned, customName, _, isFavorite, _, speciesName, icon = _G.C_PetJournal.GetPetInfoByIndex(index)
+    local petID, _, owned, customName, _, isFavorite, isRevoked, speciesName, icon = _G.C_PetJournal.GetPetInfoByIndex(index)
 
     --if we own the pet
-    if owned then
+    if owned and (not isRevoked) then
 
 
       searchableText = nil;

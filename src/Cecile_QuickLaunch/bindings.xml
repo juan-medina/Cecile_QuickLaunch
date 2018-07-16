@@ -1,6 +1,6 @@
 <Bindings>
-	<Binding name="LAUNCH_CQL" header="Cecile_QuickLauncher" category="ADDONS">
+	<Binding name="LAUNCH_CQL" category="ADDONS">
 		Cecile_QuickLaunch.AddOn:Launch()
 	</Binding>
-  <Binding name="CLICK Cecile_QL_IconButton:LeftButton" header="Cecile_QuickLauncher" category="ADDONS"> </Binding>
+  <Binding name="CLICK Cecile_QL_IconButton:LeftButton" category="ADDONS"> </Binding>
 </Bindings>
