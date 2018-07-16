@@ -17,9 +17,13 @@ Engine.Locale = L;
 --store the engine global
 _G[AddOnName] = Engine;
 
+--get the window module
+local window
+
 --register entering the world
 function AddOn:OnEnable()
   self:RegisterEvent("PLAYER_ENTERING_WORLD");
+  window = self:GetModule("window");
 end
 
 
@@ -66,9 +70,6 @@ end
 --this function is actually the one showing the window
 function AddOn:DelayShow()
 
-  --get the window module
-  local window = self:GetModule("window");
-
   --show the launcher
   window:Show(true);
 
@@ -78,6 +79,7 @@ end
 function AddOn:Launch()
 
   --delay the opening of the window 1 millisecond
-  self:ScheduleTimer("DelayShow", 0.1);
+  --self:ScheduleTimer("DelayShow", 0.1);
+  self:DelayShow()
 
 end

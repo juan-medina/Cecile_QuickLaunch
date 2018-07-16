@@ -1124,7 +1124,8 @@ function mod.OnTextChanged(self)
       --reset scroll
       mod:SetScroll(0);
 
-      _G.wipe(items);
+      --_G.wipe(items);
+      items = {}
 
     end
 
@@ -1415,6 +1416,8 @@ end
 --show/hide the main window
 function mod:Show(value)
 
+  debug("before show");
+
   --if we like to show
   if(value) then
 
@@ -1448,6 +1451,8 @@ function mod:Show(value)
 
   --always hide the secure button
   self.secureHide();
+
+  debug("after show");
 
 end
 
