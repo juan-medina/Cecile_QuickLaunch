@@ -75,8 +75,13 @@ end
 
 --whisper function
 function mod.whisper(item)
-  _G.ChatFrame_SendSmartTell(item.id)
+  _G.ChatFrame_SendTell(item.id)
 end
+
+--bnet whisper function
+  function mod.bnetWhisper(item)
+    _G.ChatFrame_SendBNetTell(item.id)
+  end
 
 --populate friends
 function mod:PopulateFriends()
@@ -90,10 +95,16 @@ function mod:PopulateFriends()
   local charText;
   local item;
 
-  local numFriends = _G.GetNumFriends();
+  local numFriends = _G.C_FriendList.GetNumFriends();
 
   for index = 1, numFriends do
-    local name, level, class, _, connected = _G.GetFriendInfo(index);
+
+    local accountInfo = _G.C_FriendList.GetFriendInfoByIndex(index)
+    local connected = accountInfo.connected
+    local level = accountInfo.level
+    local name = accountInfo.name
+    local class = accountInfo.className
+
 
     if connected then
 
@@ -163,15 +174,27 @@ function mod:PopulateBNetFriends()
 
   for index = 1, numFriends do
 
-    local bnetIDAccount, accountName, battleTag, _, _, bnetIDGameAccount, client, isOnline = _G.BNGetFriendInfo(index)
+
+    -- https://wow.gamepedia.com/API_C_BattleNet.GetFriendAccountInfo
+    local accountInfo = _G.C_BattleNet.GetFriendAccountInfo(index)
+
+    --local bnetIDAccount 	= accountInfo.gameAccountID
+    local accountName = accountInfo.accountName
+    local battleTag = accountInfo.battleTag
+    local isOnline = accountInfo.gameAccountInfo.isOnline
+    local client= accountInfo.gameAccountInfo.clientProgram
+
+    local characterName	= accountInfo.gameAccountInfo.characterName
+    local class = accountInfo.gameAccountInfo.className
+    local level	= accountInfo.gameAccountInfo.characterLevel
+    local faction	= accountInfo.gameAccountInfo.factionName
+    local toonID 	= accountInfo.gameAccountInfo.playerGuid
 
     if isOnline then
 
       local icon = mod.GetClientIcon(client);
 
       if client == _G.BNET_CLIENT_WOW then
-
-        local _, characterName, _, _, _, faction, _, class, _, _, level, _, _, _, _, toonID, _, _, _  = _G.BNGetGameAccountInfo(bnetIDGameAccount or bnetIDAccount);
 
         --base text
         charText = battleTag .. " (".. characterName ..  ")  [" .. level .. " " .. class .. "]";
@@ -180,7 +203,7 @@ function mod:PopulateBNetFriends()
           searchableText = whispersToken .. ": " .. charText;
 
           --add the text and function
-          item = { text = searchableText , id=accountName, func = mod.whisper, icon=icon, help=L["SOCIAL_HELP_WHISPER"] };
+          item = { text = searchableText , id=accountName, func = mod.bnetWhisper, icon=icon, help=L["SOCIAL_HELP_WHISPER"] };
 
           --insert the result
           table.insert(mod.items,item);
@@ -204,7 +227,7 @@ function mod:PopulateBNetFriends()
           searchableText = whispersToken .. ": " .. charText;
 
           --add the text and function
-          item = { text = searchableText , id=accountName, func = mod.whisper, icon=icon, help=L["SOCIAL_HELP_WHISPER"] };
+          item = { text = searchableText , id=accountName, func = mod.bnetWhisper, icon=icon, help=L["SOCIAL_HELP_WHISPER"] };
 
           --insert the result
           table.insert(self.items,item);
