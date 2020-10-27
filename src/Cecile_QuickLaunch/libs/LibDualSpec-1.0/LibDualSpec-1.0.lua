@@ -31,7 +31,10 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 --]]
 
-local MAJOR, MINOR = "LibDualSpec-1.0", 17
+-- just bail out on classic, there is no DualSpec there
+if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then return end
+
+local MAJOR, MINOR = "LibDualSpec-1.0", 18
 assert(LibStub, MAJOR.." requires LibStub")
 local lib, minor = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
@@ -267,10 +270,6 @@ end
 -- AceDBOptions-3.0 support
 -- ----------------------------------------------------------------------------
 
-local function NoDualSpec()
-	return UnitLevel("player") < 11
-end
-
 options.new = {
 	name = "New",
 	type = "input",
@@ -308,7 +307,6 @@ options.enabled = {
 	width = "full",
 	get = function(info) return info.handler.db:IsDualSpecEnabled() end,
 	set = function(info, value) info.handler.db:SetDualSpecEnabled(value) end,
-	hidden = NoDualSpec,
 }
 
 for i = 1, numSpecs do
@@ -322,7 +320,6 @@ for i = 1, numSpecs do
 		values = "ListProfiles",
 		arg = "common",
 		disabled = function(info) return not info.handler.db:IsDualSpecEnabled() end,
-		hidden = NoDualSpec,
 	}
 end
 
@@ -433,5 +430,4 @@ if IsLoggedIn() then
 else
 	lib.eventFrame:RegisterEvent("PLAYER_LOGIN")
 end
-
 

@@ -1,0 +1,18 @@
+tag 86a0d38e50b44b34c45fae4d9e00e8822b48b1d5 v1.16
+Author:	Kyle Buller <bullerk@gmail.com>
+Date:	Sun Oct 18 11:14:43 2020 -0500
+
+Tagging as v1.16
+
+commit da9763c90430bf561918166e3436e62eaa0369b6
+Author: Kyle Buller <bullerk@gmail.com>
+Date:   Sun Oct 18 10:56:05 2020 -0500
+
+    Always show the config options
+
+commit 044c32eb446e6e4d8b0779511fbc37c5475b7aa5
+Author: Kyle Buller <bullerk@gmail.com>
+Date:   Wed Oct 14 02:10:18 2020 -0500
+
+    Update TOC for 9.0.1
+
