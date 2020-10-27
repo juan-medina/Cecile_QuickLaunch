@@ -723,7 +723,7 @@ function mod.CreateBorder(object,direction,r,g,b)
 
   --if has not border create it
   if border == nil then
-    border = _G.CreateFrame("Frame", nil, object);
+    border = _G.CreateFrame("Frame", nil, object, BackdropTemplateMixin and "BackdropTemplate");
   end
 
   --if has anchors remove them

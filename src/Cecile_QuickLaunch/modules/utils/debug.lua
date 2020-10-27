@@ -88,7 +88,7 @@ function mod:OnInitialize()
   setmetatable(self, mt);
 
   --module frame
-  mod.frame = _G.CreateFrame("Frame", Engine.Name.."_DBG_Frame", _G.UIParent);
+  mod.frame = _G.CreateFrame("Frame", Engine.Name.."_DBG_Frame", _G.UIParent, BackdropTemplateMixin and "BackdropTemplate");
   local frame = self.frame;
 
   --main window
